@@ -48,9 +48,18 @@
             this.btn_Test = new System.Windows.Forms.Button();
             this.pnl_Main = new System.Windows.Forms.Panel();
             this.pnl_Benchmark = new System.Windows.Forms.Panel();
+            this.grp_Benchmark = new System.Windows.Forms.GroupBox();
+            this.txt_LogPath = new System.Windows.Forms.TextBox();
+            this.button1 = new System.Windows.Forms.Button();
+            this.btn_Benchmark = new System.Windows.Forms.Button();
+            this.lbl_LogPath = new System.Windows.Forms.Label();
+            this.txt_Round = new System.Windows.Forms.TextBox();
+            this.lbl_Round = new System.Windows.Forms.Label();
             this.statusStrip.SuspendLayout();
             this.menuStrip.SuspendLayout();
             this.pnl_Main.SuspendLayout();
+            this.pnl_Benchmark.SuspendLayout();
+            this.grp_Benchmark.SuspendLayout();
             this.SuspendLayout();
             // 
             // statusStrip
@@ -59,7 +68,7 @@
             this.tssl_Status,
             this.tssl_SplitLine01,
             this.tssl_Time});
-            this.statusStrip.Location = new System.Drawing.Point(0, 311);
+            this.statusStrip.Location = new System.Drawing.Point(0, 316);
             this.statusStrip.Name = "statusStrip";
             this.statusStrip.Size = new System.Drawing.Size(680, 25);
             this.statusStrip.TabIndex = 0;
@@ -75,7 +84,7 @@
             // tssl_SplitLine01
             // 
             this.tssl_SplitLine01.Name = "tssl_SplitLine01";
-            this.tssl_SplitLine01.Size = new System.Drawing.Size(262, 20);
+            this.tssl_SplitLine01.Size = new System.Drawing.Size(602, 20);
             this.tssl_SplitLine01.Spring = true;
             // 
             // tssl_Time
@@ -216,6 +225,7 @@
             // 
             // pnl_Main
             // 
+            this.pnl_Main.BackColor = System.Drawing.SystemColors.Control;
             this.pnl_Main.Controls.Add(this.lbl_InputPath);
             this.pnl_Main.Controls.Add(this.btn_Test);
             this.pnl_Main.Controls.Add(this.btn_Start);
@@ -233,16 +243,87 @@
             // 
             // pnl_Benchmark
             // 
+            this.pnl_Benchmark.Controls.Add(this.grp_Benchmark);
             this.pnl_Benchmark.Location = new System.Drawing.Point(348, 27);
             this.pnl_Benchmark.Name = "pnl_Benchmark";
             this.pnl_Benchmark.Size = new System.Drawing.Size(317, 284);
             this.pnl_Benchmark.TabIndex = 9;
             // 
+            // grp_Benchmark
+            // 
+            this.grp_Benchmark.Controls.Add(this.lbl_Round);
+            this.grp_Benchmark.Controls.Add(this.txt_Round);
+            this.grp_Benchmark.Controls.Add(this.txt_LogPath);
+            this.grp_Benchmark.Controls.Add(this.button1);
+            this.grp_Benchmark.Controls.Add(this.btn_Benchmark);
+            this.grp_Benchmark.Controls.Add(this.lbl_LogPath);
+            this.grp_Benchmark.Location = new System.Drawing.Point(3, 3);
+            this.grp_Benchmark.Name = "grp_Benchmark";
+            this.grp_Benchmark.Size = new System.Drawing.Size(311, 278);
+            this.grp_Benchmark.TabIndex = 0;
+            this.grp_Benchmark.TabStop = false;
+            this.grp_Benchmark.Text = "Benchmark";
+            // 
+            // txt_LogPath
+            // 
+            this.txt_LogPath.Location = new System.Drawing.Point(6, 60);
+            this.txt_LogPath.Name = "txt_LogPath";
+            this.txt_LogPath.ReadOnly = true;
+            this.txt_LogPath.Size = new System.Drawing.Size(277, 22);
+            this.txt_LogPath.TabIndex = 2;
+            this.txt_LogPath.Text = "D:\\Users\\Nale\\Desktop\\alghw\\log\\log.csv";
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(283, 60);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(23, 23);
+            this.button1.TabIndex = 1;
+            this.button1.Text = "...";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.btn_SelectOutput_Click);
+            // 
+            // btn_Benchmark
+            // 
+            this.btn_Benchmark.Location = new System.Drawing.Point(230, 253);
+            this.btn_Benchmark.Name = "btn_Benchmark";
+            this.btn_Benchmark.Size = new System.Drawing.Size(75, 23);
+            this.btn_Benchmark.TabIndex = 1;
+            this.btn_Benchmark.Text = "Start";
+            this.btn_Benchmark.UseVisualStyleBackColor = true;
+            this.btn_Benchmark.Click += new System.EventHandler(this.btn_Benchmark_Click);
+            // 
+            // lbl_LogPath
+            // 
+            this.lbl_LogPath.AutoSize = true;
+            this.lbl_LogPath.Location = new System.Drawing.Point(4, 45);
+            this.lbl_LogPath.Name = "lbl_LogPath";
+            this.lbl_LogPath.Size = new System.Drawing.Size(47, 12);
+            this.lbl_LogPath.TabIndex = 3;
+            this.lbl_LogPath.Text = "Log path";
+            // 
+            // txt_Round
+            // 
+            this.txt_Round.Location = new System.Drawing.Point(62, 15);
+            this.txt_Round.Name = "txt_Round";
+            this.txt_Round.Size = new System.Drawing.Size(100, 22);
+            this.txt_Round.TabIndex = 4;
+            this.txt_Round.Text = "10";
+            // 
+            // lbl_Round
+            // 
+            this.lbl_Round.AutoSize = true;
+            this.lbl_Round.Location = new System.Drawing.Point(6, 20);
+            this.lbl_Round.Name = "lbl_Round";
+            this.lbl_Round.Size = new System.Drawing.Size(37, 12);
+            this.lbl_Round.TabIndex = 3;
+            this.lbl_Round.Text = "Round";
+            // 
             // MainFrm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(680, 336);
+            this.ClientSize = new System.Drawing.Size(680, 341);
             this.Controls.Add(this.pnl_Benchmark);
             this.Controls.Add(this.pnl_Main);
             this.Controls.Add(this.statusStrip);
@@ -257,6 +338,9 @@
             this.menuStrip.PerformLayout();
             this.pnl_Main.ResumeLayout(false);
             this.pnl_Main.PerformLayout();
+            this.pnl_Benchmark.ResumeLayout(false);
+            this.grp_Benchmark.ResumeLayout(false);
+            this.grp_Benchmark.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -284,6 +368,13 @@
         private System.Windows.Forms.Button btn_Test;
         private System.Windows.Forms.Panel pnl_Main;
         private System.Windows.Forms.Panel pnl_Benchmark;
+        private System.Windows.Forms.GroupBox grp_Benchmark;
+        private System.Windows.Forms.TextBox txt_LogPath;
+        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Label lbl_LogPath;
+        private System.Windows.Forms.Button btn_Benchmark;
+        private System.Windows.Forms.Label lbl_Round;
+        private System.Windows.Forms.TextBox txt_Round;
     }
 }
 

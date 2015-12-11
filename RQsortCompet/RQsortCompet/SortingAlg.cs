@@ -13,7 +13,7 @@ namespace RQsortCompet
         private static Random _rand = new Random();
 
         private static readonly int _MAX_STACK_DEPTH = Properties.Settings.Default._STACK_DEPTH;
-        private static int _stackDepth = 3;
+        private static int _stackDepth = 10;
 
         #region Properties
         private static int StackDepth
@@ -69,12 +69,44 @@ namespace RQsortCompet
         public static void QSort3(string[] unsorted)
         {
             // ref: http://www.informit.com/articles/article.aspx?p=2180073&seqNum=4
-            QSort3(unsorted, 0, unsorted.Length - 1, 0, 10);
+            QSort3(unsorted, 0, unsorted.Length - 1, 0, _stackDepth);
         }
 
-        public static void RQSort3(string[] unsorted)
+        public static void QSort3(ref string[] unsorted, int start, int end)
         {
-            RQSort3(unsorted, 0, unsorted.Length - 1, 0, 10);
+            if (start < 0 || end > unsorted.Length - 1)
+            {
+                throw new InvalidArgException("Given index of data is out of range.");
+            }
+            QSort3(unsorted, start, end, 0, _stackDepth);
+        }
+
+        public static void RQSort(ref string[] unsorted)
+        {
+            RQSort(unsorted, 0, unsorted.Length - 1, _stackDepth);
+        }
+
+        public static void RQSort(ref string[] unsorted, int start, int end)
+        {
+            if (start < 0 || end > unsorted.Length - 1)
+            {
+                throw new InvalidArgException("Given index of data is out of range.");
+            }
+            RQSort(unsorted, start, end,_stackDepth);
+        }
+
+        public static void RQSort3(ref string[] unsorted)
+        {
+            RQSort3(unsorted, 0, unsorted.Length - 1, 0, _stackDepth);
+        }
+
+        public static void RQSort3(ref string[] unsorted, int start, int end)
+        {
+            if (start < 0 || end > unsorted.Length - 1)
+            {
+                throw new InvalidArgException("Given index of data is out of range.");
+            }
+            RQSort3(unsorted, start, end, 0, _stackDepth);
         }
 
         private static void QSort3(string[] a, int lo, int hi, int d, int sd)
@@ -147,9 +179,24 @@ namespace RQsortCompet
                 QSort3(a, gt + 1, hi, d, 0);
             }
         }
-        
+
+        private static void RQSort(string[] a, int p, int r, int sd)
+        {
+            if (p < r)
+            {
+                int q = RPartition(a, p, r);
+                if (--sd > 0)
+                {
+                    Parallel.Invoke(
+                        () => RQSort(a, p, q - 1, sd),
+                        () => RQSort(a, q + 1, r, sd)
+                    );
+                }
+            }
+        }
+
         /// <summary>
-        /// Randomized quicksort with three-way partitioning.
+        /// Randomized radix quicksort with three-way partitioning.
         /// </summary>
         /// <param name="a">String array.</param>
         /// <param name="lo">Low index pointer of a string.</param>
@@ -202,6 +249,29 @@ namespace RQsortCompet
                 // Right part
                 RQSort3(a, gt + 1, hi, d, sd);
             }
+        }
+
+        private static int Partition(string[] a, int p, int r)
+        {
+            string v = a[r];
+            int i = p - 1;
+            for (int j = p; j < r; j++)
+            {
+                if (string.Compare(a[j], v) <= 0)
+                {
+                    i++;
+                    Swap(ref a[i], ref a[j]);
+                }
+            }
+            Swap(ref a[i + 1], ref a[r]);
+            return i + 1;
+        }
+
+        private static int RPartition(string[] a, int p, int r)
+        {
+            int i = _rand.Next(p, r);
+            Swap(ref a[r], ref a[i]);
+            return Partition(a, p, r);
         }
 
         /// <summary>

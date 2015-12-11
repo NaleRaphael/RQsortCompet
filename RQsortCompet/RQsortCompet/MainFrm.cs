@@ -10,7 +10,7 @@ using System.Windows.Forms;
 using System.IO;
 using System.Timers;
 using System.Diagnostics;
-
+using System.Threading;
 
 namespace RQsortCompet
 {
@@ -33,6 +33,8 @@ namespace RQsortCompet
         // Form
         private Frm_Preference frm_pref;
         private Frm_DataConverter frm_dataConverter;
+        // Thread
+        private Thread _worker;
         #endregion
 
         public MainFrm()
@@ -76,6 +78,7 @@ namespace RQsortCompet
             string[] data;
             Stopwatch sw = new Stopwatch();
 
+            // Read file and generate data
             sw.Start();
             try
             {
@@ -89,13 +92,13 @@ namespace RQsortCompet
             }
             sw.Stop();
             UpdateTimeSpan(ref sw, ref _ts_read, ref _ms_read);
-            
 
             // TODO: Using multi-threading to host sorting
             sw.Start();
             try
             {
-                SortingAlg.RQSort3(data);
+                SortingAlg.RQSort(ref data);
+                //SortingAlg.RQSort3(ref data);
                 //SortingAlg.InsertionSort(data);
             }
             catch (Exception ex)
@@ -165,40 +168,14 @@ namespace RQsortCompet
         {
             return new Point((int)(frm.Location.X + frm.Width / 4), (int)(frm.Location.Y + frm.Height / 4));
         }
-        #endregion
-
-        #region Other functions
-        private void UpdateTimeSpan(ref Stopwatch sw, ref TimeSpan ts, ref long ms)
-        {
-            ts = sw.Elapsed;
-            ms = sw.ElapsedMilliseconds;
-        }
-        private void ShowTimeSpan(string str, TimeSpan ts, long ms)
-        {
-            txt_Display.AppendText(string.Format("{0}: \r\nTime span: {1} \r\nTime: {2}ms \r\n", str, ts, ms));
-        }
-        private void ExportData(ref string[] data, string destination)
-        {
-            _writer = new StreamWriter(txt_OutputPath.Text);
-            for (int i = 0; i < data.Length; i++)
-            {
-                _writer.WriteLine(data[i]);
-            }
-            _writer.Close();
-        }
-        #endregion
-
-        private void btn_Test_Click(object sender, EventArgs e)
-        {
-
-        }
 
         private void tsmi_Benchmark_Click(object sender, EventArgs e)
         {
             _ctrl_timer = new System.Windows.Forms.Timer();
             _ctrl_timer.Tick += new EventHandler(ShowOrHide_pnl_Benchmark);
             _ctrl_timer.Interval = 1;
-            _enable_benchmark = !_enable_benchmark;  // Invert flag of panel control
+            _enable_benchmark = !_enable_benchmark;     // Invert flag of panel control
+            pnl_Benchmark.Enabled = _enable_benchmark;  // Lock or unlock panel
             _ctrl_timer.Enabled = true;
         }
 
@@ -230,15 +207,56 @@ namespace RQsortCompet
                 }
             }
         }
-        
-    }
+        #endregion
 
-    public class ResizeEventArgs : EventArgs
-    {
-        public int Step { get; set; }
-        public ResizeEventArgs(int step)
+        #region Other functions
+        private void UpdateTimeSpan(ref Stopwatch sw, ref TimeSpan ts, ref long ms)
         {
-            Step = step;
+            ts = sw.Elapsed;
+            ms = sw.ElapsedMilliseconds;
         }
+        private void ShowTimeSpan(string str, TimeSpan ts, long ms)
+        {
+            txt_Display.AppendText(string.Format("{0}: \r\nTime span: {1} \r\nTime: {2}ms \r\n", str, ts, ms));
+        }
+        private void ExportData(ref string[] data, string destination)
+        {
+            _writer = new StreamWriter(txt_OutputPath.Text);
+            for (int i = 0; i < data.Length; i++)
+            {
+                _writer.WriteLine(data[i]);
+            }
+            _writer.Close();
+        }
+        #endregion
+
+        private void btn_Test_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btn_Benchmark_Click(object sender, EventArgs e)
+        {
+            if (!File.Exists(txt_InputPath.Text))
+            {
+                return;
+            }
+
+            string raw = File.ReadAllText(txt_InputPath.Text);
+            string[] data = raw.Split(' ');
+
+            try
+            {
+                AlgBenchmark.FuncDelegate = SortingAlg.RQSort3;
+                AlgBenchmark.Start(ref data, Convert.ToInt32(txt_Round.Text), txt_LogPath.Text);
+                MessageBox.Show("Done");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+        
+        
     }
 }
