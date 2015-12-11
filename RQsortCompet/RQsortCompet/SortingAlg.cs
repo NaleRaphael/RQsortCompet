@@ -66,7 +66,21 @@ namespace RQsortCompet
             }
         }
 
-        public static void QSort3(string[] unsorted)
+        public static void QSort(ref string[] unsorted)
+        {
+            QSort(unsorted, 0, unsorted.Length - 1, 0);
+        }
+
+        public static void QSort(ref string[] unsorted, int start, int end)
+        {
+            if (start < 0 || end > unsorted.Length - 1)
+            {
+                throw new InvalidArgException("Given index of data is out of range.");
+            }
+            QSort(unsorted, start, end, _stackDepth);
+        }
+
+        public static void QSort3(ref string[] unsorted)
         {
             // ref: http://www.informit.com/articles/article.aspx?p=2180073&seqNum=4
             QSort3(unsorted, 0, unsorted.Length - 1, 0, _stackDepth);
@@ -92,7 +106,7 @@ namespace RQsortCompet
             {
                 throw new InvalidArgException("Given index of data is out of range.");
             }
-            RQSort(unsorted, start, end,_stackDepth);
+            RQSort(unsorted, start, end, _stackDepth);
         }
 
         public static void RQSort3(ref string[] unsorted)
@@ -107,6 +121,21 @@ namespace RQsortCompet
                 throw new InvalidArgException("Given index of data is out of range.");
             }
             RQSort3(unsorted, start, end, 0, _stackDepth);
+        }
+
+        private static void QSort(string[] a, int p, int r, int sd)
+        {
+            if (p < r)
+            {
+                int q = Partition(a, p, r);
+                if (--sd > 0)
+                {
+                    Parallel.Invoke(
+                        () => QSort(a, p, q - 1, sd),
+                        () => QSort(a, q + 1, r, sd)
+                    );
+                }
+            }
         }
 
         private static void QSort3(string[] a, int lo, int hi, int d, int sd)
@@ -341,11 +370,6 @@ namespace RQsortCompet
             }
         }
 
-        public static void MergeSort(string[] a)
-        {
-
-        }
-        
         public static void Swap(string[] a, int i, int j)
         {
             string temp = a[i];

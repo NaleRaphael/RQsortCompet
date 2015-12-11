@@ -39,7 +39,6 @@ namespace RQsortCompet
 
             try
             {
-                
                 for (i = 1; i <= stepNum; i++)
                 {
                     Array.Copy(data, testData, step * i);
@@ -48,15 +47,6 @@ namespace RQsortCompet
                     _sw.Stop();
                     log[i-1] = string.Format("{0}, {1}", step * i, _sw.ElapsedMilliseconds.ToString());
                 }
-                
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-
-            try
-            {
                 WriteLog(logPath, log);
             }
             catch (Exception ex)

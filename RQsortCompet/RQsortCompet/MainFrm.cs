@@ -11,6 +11,7 @@ using System.IO;
 using System.Timers;
 using System.Diagnostics;
 using System.Threading;
+using System.Reflection;
 
 namespace RQsortCompet
 {
@@ -45,7 +46,10 @@ namespace RQsortCompet
 
         public void InitializeControl()
         {
+            // For pnl_Benchmark
             this.Width = 356;
+            // For searching method
+            cmb_SortingMethod.SelectedIndex = 0;
         }
 
         #region Button
@@ -245,6 +249,22 @@ namespace RQsortCompet
             string raw = File.ReadAllText(txt_InputPath.Text);
             string[] data = raw.Split(' ');
 
+            // Get method from cmb_SortingMethod
+            string methodName = cmb_SortingMethod.SelectedItem.ToString();
+            Type type = typeof(SortingAlg);
+            MethodInfo method = type.GetMethod(
+                methodName,
+                BindingFlags.Public | BindingFlags.Static,
+                Type.DefaultBinder,
+                new[] {typeof(string[]).MakeByRefType(), typeof(int), typeof(int)},
+                null);
+
+            // Check
+            if (method == null)
+            {
+                return;
+            }
+
             try
             {
                 AlgBenchmark.FuncDelegate = SortingAlg.RQSort3;
@@ -256,7 +276,5 @@ namespace RQsortCompet
                 MessageBox.Show(ex.Message);
             }
         }
-        
-        
     }
 }

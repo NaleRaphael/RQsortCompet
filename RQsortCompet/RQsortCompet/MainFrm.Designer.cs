@@ -55,6 +55,8 @@
             this.lbl_LogPath = new System.Windows.Forms.Label();
             this.txt_Round = new System.Windows.Forms.TextBox();
             this.lbl_Round = new System.Windows.Forms.Label();
+            this.cmb_SortingMethod = new System.Windows.Forms.ComboBox();
+            this.lbl_SortingMethod = new System.Windows.Forms.Label();
             this.statusStrip.SuspendLayout();
             this.menuStrip.SuspendLayout();
             this.pnl_Main.SuspendLayout();
@@ -161,12 +163,12 @@
             // 
             // txt_Display
             // 
-            this.txt_Display.Location = new System.Drawing.Point(5, 90);
+            this.txt_Display.Location = new System.Drawing.Point(5, 135);
             this.txt_Display.Multiline = true;
             this.txt_Display.Name = "txt_Display";
             this.txt_Display.ReadOnly = true;
             this.txt_Display.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.txt_Display.Size = new System.Drawing.Size(300, 160);
+            this.txt_Display.Size = new System.Drawing.Size(300, 115);
             this.txt_Display.TabIndex = 2;
             // 
             // btn_Clear
@@ -226,11 +228,13 @@
             // pnl_Main
             // 
             this.pnl_Main.BackColor = System.Drawing.SystemColors.Control;
+            this.pnl_Main.Controls.Add(this.cmb_SortingMethod);
             this.pnl_Main.Controls.Add(this.lbl_InputPath);
             this.pnl_Main.Controls.Add(this.btn_Test);
             this.pnl_Main.Controls.Add(this.btn_Start);
             this.pnl_Main.Controls.Add(this.btn_Clear);
             this.pnl_Main.Controls.Add(this.btn_SelectInput);
+            this.pnl_Main.Controls.Add(this.lbl_SortingMethod);
             this.pnl_Main.Controls.Add(this.lbl_OutputPath);
             this.pnl_Main.Controls.Add(this.txt_InputPath);
             this.pnl_Main.Controls.Add(this.txt_Display);
@@ -319,6 +323,29 @@
             this.lbl_Round.TabIndex = 3;
             this.lbl_Round.Text = "Round";
             // 
+            // cmb_SortingMethod
+            // 
+            this.cmb_SortingMethod.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmb_SortingMethod.FormattingEnabled = true;
+            this.cmb_SortingMethod.Items.AddRange(new object[] {
+            "QSort",
+            "RQSort",
+            "QSort3",
+            "RQSort3"});
+            this.cmb_SortingMethod.Location = new System.Drawing.Point(88, 89);
+            this.cmb_SortingMethod.Name = "cmb_SortingMethod";
+            this.cmb_SortingMethod.Size = new System.Drawing.Size(121, 20);
+            this.cmb_SortingMethod.TabIndex = 8;
+            // 
+            // lbl_SortingMethod
+            // 
+            this.lbl_SortingMethod.AutoSize = true;
+            this.lbl_SortingMethod.Location = new System.Drawing.Point(5, 92);
+            this.lbl_SortingMethod.Name = "lbl_SortingMethod";
+            this.lbl_SortingMethod.Size = new System.Drawing.Size(77, 12);
+            this.lbl_SortingMethod.TabIndex = 3;
+            this.lbl_SortingMethod.Text = "Sorting method";
+            // 
             // MainFrm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -330,6 +357,8 @@
             this.Controls.Add(this.menuStrip);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MainMenuStrip = this.menuStrip;
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "MainFrm";
             this.Text = "String sorting";
             this.statusStrip.ResumeLayout(false);
@@ -375,6 +404,8 @@
         private System.Windows.Forms.Button btn_Benchmark;
         private System.Windows.Forms.Label lbl_Round;
         private System.Windows.Forms.TextBox txt_Round;
+        private System.Windows.Forms.ComboBox cmb_SortingMethod;
+        private System.Windows.Forms.Label lbl_SortingMethod;
     }
 }
 
