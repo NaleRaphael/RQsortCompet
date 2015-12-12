@@ -13,6 +13,8 @@ namespace RQsortCompet
     {
         public delegate void AlgDelegate(ref string[] data, int start, int end);
         public static AlgDelegate FuncDelegate;
+        
+
         private static Stopwatch _sw = new Stopwatch();
 
         public static void Start(ref string[] data, int stepNum, string logPath)
@@ -33,13 +35,18 @@ namespace RQsortCompet
         private static void Benchmark(AlgDelegate func, ref string[] data, int stepNum, string logPath)
         {
             int step = data.Length / stepNum;
+
+            if (step <= 1)
+            {
+                throw new MyBenchmarkException("Given value of testing round makes step for each loop be too small.\nPlease re-enter an value.");
+            }
+
             string[] log = new string[stepNum];
-            int i;
             string[] testData = new string[data.Length];
 
             try
             {
-                for (i = 1; i <= stepNum; i++)
+                for (int i = 1; i <= stepNum; i++)
                 {
                     Array.Copy(data, testData, step * i);
                     _sw.Start();

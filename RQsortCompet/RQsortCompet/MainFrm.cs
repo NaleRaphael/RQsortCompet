@@ -101,9 +101,10 @@ namespace RQsortCompet
             sw.Start();
             try
             {
-                SortingAlg.RQSort(ref data);
+                SortingAlg.InsertionSort_multikey(ref data);
+                //SortingAlg.RQSort(ref data);
                 //SortingAlg.RQSort3(ref data);
-                //SortingAlg.InsertionSort(data);
+                //SortingAlg.InsertionSort(ref data);
             }
             catch (Exception ex)
             {
@@ -119,6 +120,7 @@ namespace RQsortCompet
             UpdateTimeSpan(ref sw, ref _ts_write, ref _ms_write);
 
             tssl_Status.Text = "Done";
+            tssl_Time.Text = string.Format("Time: {0}", _ts_sort.ToString());
             ShowTimeSpan("Read", _ts_read, _ms_read);
             ShowTimeSpan("Sort", _ts_sort, _ms_sort);
             ShowTimeSpan("Write", _ts_write, _ms_write);
@@ -262,12 +264,13 @@ namespace RQsortCompet
             // Check
             if (method == null)
             {
+                MessageBox.Show("Method not found.");
                 return;
             }
 
             try
             {
-                AlgBenchmark.FuncDelegate = SortingAlg.RQSort3;
+                AlgBenchmark.FuncDelegate = (AlgBenchmark.AlgDelegate)Delegate.CreateDelegate(typeof(AlgBenchmark.AlgDelegate), method);
                 AlgBenchmark.Start(ref data, Convert.ToInt32(txt_Round.Text), txt_LogPath.Text);
                 MessageBox.Show("Done");
             }

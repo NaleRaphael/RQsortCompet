@@ -47,16 +47,18 @@
             this.tsmi_Preference = new System.Windows.Forms.ToolStripMenuItem();
             this.btn_Test = new System.Windows.Forms.Button();
             this.pnl_Main = new System.Windows.Forms.Panel();
+            this.cmb_SortingMethod = new System.Windows.Forms.ComboBox();
+            this.lbl_SortingMethod = new System.Windows.Forms.Label();
             this.pnl_Benchmark = new System.Windows.Forms.Panel();
             this.grp_Benchmark = new System.Windows.Forms.GroupBox();
+            this.lbl_Round = new System.Windows.Forms.Label();
+            this.txt_Round = new System.Windows.Forms.TextBox();
             this.txt_LogPath = new System.Windows.Forms.TextBox();
             this.button1 = new System.Windows.Forms.Button();
             this.btn_Benchmark = new System.Windows.Forms.Button();
             this.lbl_LogPath = new System.Windows.Forms.Label();
-            this.txt_Round = new System.Windows.Forms.TextBox();
-            this.lbl_Round = new System.Windows.Forms.Label();
-            this.cmb_SortingMethod = new System.Windows.Forms.ComboBox();
-            this.lbl_SortingMethod = new System.Windows.Forms.Label();
+            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.label1 = new System.Windows.Forms.Label();
             this.statusStrip.SuspendLayout();
             this.menuStrip.SuspendLayout();
             this.pnl_Main.SuspendLayout();
@@ -240,10 +242,36 @@
             this.pnl_Main.Controls.Add(this.txt_Display);
             this.pnl_Main.Controls.Add(this.btn_SelectOutput);
             this.pnl_Main.Controls.Add(this.txt_OutputPath);
+            this.pnl_Main.ForeColor = System.Drawing.SystemColors.ControlText;
             this.pnl_Main.Location = new System.Drawing.Point(12, 27);
             this.pnl_Main.Name = "pnl_Main";
             this.pnl_Main.Size = new System.Drawing.Size(317, 284);
             this.pnl_Main.TabIndex = 8;
+            // 
+            // cmb_SortingMethod
+            // 
+            this.cmb_SortingMethod.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmb_SortingMethod.FormattingEnabled = true;
+            this.cmb_SortingMethod.Items.AddRange(new object[] {
+            "QSort",
+            "RQSort",
+            "QSort3",
+            "RQSort3",
+            "InsertionSort",
+            "InsertionSort_multikey"});
+            this.cmb_SortingMethod.Location = new System.Drawing.Point(86, 96);
+            this.cmb_SortingMethod.Name = "cmb_SortingMethod";
+            this.cmb_SortingMethod.Size = new System.Drawing.Size(121, 20);
+            this.cmb_SortingMethod.TabIndex = 8;
+            // 
+            // lbl_SortingMethod
+            // 
+            this.lbl_SortingMethod.AutoSize = true;
+            this.lbl_SortingMethod.Location = new System.Drawing.Point(3, 99);
+            this.lbl_SortingMethod.Name = "lbl_SortingMethod";
+            this.lbl_SortingMethod.Size = new System.Drawing.Size(77, 12);
+            this.lbl_SortingMethod.TabIndex = 3;
+            this.lbl_SortingMethod.Text = "Sorting method";
             // 
             // pnl_Benchmark
             // 
@@ -255,7 +283,9 @@
             // 
             // grp_Benchmark
             // 
+            this.grp_Benchmark.Controls.Add(this.label1);
             this.grp_Benchmark.Controls.Add(this.lbl_Round);
+            this.grp_Benchmark.Controls.Add(this.textBox1);
             this.grp_Benchmark.Controls.Add(this.txt_Round);
             this.grp_Benchmark.Controls.Add(this.txt_LogPath);
             this.grp_Benchmark.Controls.Add(this.button1);
@@ -268,8 +298,26 @@
             this.grp_Benchmark.TabStop = false;
             this.grp_Benchmark.Text = "Benchmark";
             // 
+            // lbl_Round
+            // 
+            this.lbl_Round.AutoSize = true;
+            this.lbl_Round.Location = new System.Drawing.Point(6, 20);
+            this.lbl_Round.Name = "lbl_Round";
+            this.lbl_Round.Size = new System.Drawing.Size(37, 12);
+            this.lbl_Round.TabIndex = 3;
+            this.lbl_Round.Text = "Round";
+            // 
+            // txt_Round
+            // 
+            this.txt_Round.Location = new System.Drawing.Point(49, 15);
+            this.txt_Round.Name = "txt_Round";
+            this.txt_Round.Size = new System.Drawing.Size(50, 22);
+            this.txt_Round.TabIndex = 4;
+            this.txt_Round.Text = "10";
+            // 
             // txt_LogPath
             // 
+            this.txt_LogPath.ForeColor = System.Drawing.SystemColors.WindowText;
             this.txt_LogPath.Location = new System.Drawing.Point(6, 60);
             this.txt_LogPath.Name = "txt_LogPath";
             this.txt_LogPath.ReadOnly = true;
@@ -300,51 +348,28 @@
             // lbl_LogPath
             // 
             this.lbl_LogPath.AutoSize = true;
-            this.lbl_LogPath.Location = new System.Drawing.Point(4, 45);
+            this.lbl_LogPath.Location = new System.Drawing.Point(6, 43);
             this.lbl_LogPath.Name = "lbl_LogPath";
             this.lbl_LogPath.Size = new System.Drawing.Size(47, 12);
             this.lbl_LogPath.TabIndex = 3;
             this.lbl_LogPath.Text = "Log path";
             // 
-            // txt_Round
+            // textBox1
             // 
-            this.txt_Round.Location = new System.Drawing.Point(62, 15);
-            this.txt_Round.Name = "txt_Round";
-            this.txt_Round.Size = new System.Drawing.Size(100, 22);
-            this.txt_Round.TabIndex = 4;
-            this.txt_Round.Text = "10";
+            this.textBox1.Location = new System.Drawing.Point(182, 15);
+            this.textBox1.Name = "textBox1";
+            this.textBox1.Size = new System.Drawing.Size(50, 22);
+            this.textBox1.TabIndex = 4;
+            this.textBox1.Text = "10";
             // 
-            // lbl_Round
+            // label1
             // 
-            this.lbl_Round.AutoSize = true;
-            this.lbl_Round.Location = new System.Drawing.Point(6, 20);
-            this.lbl_Round.Name = "lbl_Round";
-            this.lbl_Round.Size = new System.Drawing.Size(37, 12);
-            this.lbl_Round.TabIndex = 3;
-            this.lbl_Round.Text = "Round";
-            // 
-            // cmb_SortingMethod
-            // 
-            this.cmb_SortingMethod.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmb_SortingMethod.FormattingEnabled = true;
-            this.cmb_SortingMethod.Items.AddRange(new object[] {
-            "QSort",
-            "RQSort",
-            "QSort3",
-            "RQSort3"});
-            this.cmb_SortingMethod.Location = new System.Drawing.Point(88, 89);
-            this.cmb_SortingMethod.Name = "cmb_SortingMethod";
-            this.cmb_SortingMethod.Size = new System.Drawing.Size(121, 20);
-            this.cmb_SortingMethod.TabIndex = 8;
-            // 
-            // lbl_SortingMethod
-            // 
-            this.lbl_SortingMethod.AutoSize = true;
-            this.lbl_SortingMethod.Location = new System.Drawing.Point(5, 92);
-            this.lbl_SortingMethod.Name = "lbl_SortingMethod";
-            this.lbl_SortingMethod.Size = new System.Drawing.Size(77, 12);
-            this.lbl_SortingMethod.TabIndex = 3;
-            this.lbl_SortingMethod.Text = "Sorting method";
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(139, 20);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(37, 12);
+            this.label1.TabIndex = 3;
+            this.label1.Text = "Round";
             // 
             // MainFrm
             // 
@@ -406,6 +431,8 @@
         private System.Windows.Forms.TextBox txt_Round;
         private System.Windows.Forms.ComboBox cmb_SortingMethod;
         private System.Windows.Forms.Label lbl_SortingMethod;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.TextBox textBox1;
     }
 }
 

@@ -13,4 +13,13 @@ namespace RQsortCompet
         {
         }
     }
+
+    public class MyBenchmarkException : Exception
+    {
+        public MyBenchmarkException(string message)
+            : base(message)
+        {
+
+        }
+    }
 }

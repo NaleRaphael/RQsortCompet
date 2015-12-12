@@ -8,7 +8,7 @@ using System.Threading;
 
 namespace RQsortCompet
 {
-    static class SortingAlg
+    public static class SortingAlg
     {
         private static Random _rand = new Random();
 
@@ -36,20 +36,20 @@ namespace RQsortCompet
         }
         #endregion
 
+        // Test function
         public static void ChangeSD()
         {
             MessageBox.Show(string.Format("{0}", _stackDepth));
-
             for (int i = 0; i < 3; i++)
             {
                 _stackDepth++;
             }
-
             MessageBox.Show(string.Format("{0}", _stackDepth));
         }
 
+        // TODO: write a version of passing the reference of string
         /// <summary>
-        /// 
+        /// Find the character by a given index from a string.
         /// </summary>
         /// <param name="s">String.</param>
         /// <param name="d"></param>
@@ -66,6 +66,7 @@ namespace RQsortCompet
             }
         }
 
+        #region Sorting algorithm
         public static void QSort(ref string[] unsorted)
         {
             QSort(unsorted, 0, unsorted.Length - 1, 0);
@@ -82,7 +83,6 @@ namespace RQsortCompet
 
         public static void QSort3(ref string[] unsorted)
         {
-            // ref: http://www.informit.com/articles/article.aspx?p=2180073&seqNum=4
             QSort3(unsorted, 0, unsorted.Length - 1, 0, _stackDepth);
         }
 
@@ -226,6 +226,7 @@ namespace RQsortCompet
 
         /// <summary>
         /// Randomized radix quicksort with three-way partitioning.
+        /// ref: http://www.informit.com/articles/article.aspx?p=2180073&seqNum=4
         /// </summary>
         /// <param name="a">String array.</param>
         /// <param name="lo">Low index pointer of a string.</param>
@@ -252,16 +253,16 @@ namespace RQsortCompet
                 if (v >= 0)
                 {
                     Parallel.Invoke(
-                        () => RQSort3(a, lo, lt - 1, d, sd),
-                        () => RQSort3(a, lt, gt, d+1, sd),
-                        () => RQSort3(a, gt + 1, hi, d, sd)
+                        () => RQSort3(a, lo, lt - 1, d, sd),    // Left part
+                        () => RQSort3(a, lt, gt, d + 1, sd),    // Middle part
+                        () => RQSort3(a, gt + 1, hi, d, sd)     // Right part
                     );
                 }
                 else
                 {
                     Parallel.Invoke(
-                        () => RQSort3(a, lo, lt - 1, d, sd),
-                        () => RQSort3(a, gt + 1, hi, d, sd)
+                        () => RQSort3(a, lo, lt - 1, d, sd),    // Left part
+                        () => RQSort3(a, gt + 1, hi, d, sd)     // Right part
                     );
                 }
                 
@@ -348,14 +349,45 @@ namespace RQsortCompet
             }
         }
 
-        public static void InsertionSort(string[] a)
+        public static void InsertionSort(ref string[] a)
         {
-            InsertionSort(a, 0, a.Length);
+            InsrtSort(a, 0, a.Length);
         }
 
-        private static void InsertionSort(string[] a, int left, int right)
+        public static void InsertionSort(ref string[] a, int left, int right)
         {
-            string temp;
+            InsrtSort(a, left, right);
+        }
+
+        public static void InsertionSort_multikey(ref string[] a)
+        {
+            InsertionSort_multikey(ref a, 0, a.Length - 1);
+        }
+
+        public static void InsertionSort_multikey(ref string[] a, int left, int right)
+        {
+            int maxLen = FindLongestString(ref a, left, right);
+            InsrtSort_mk(a, left, right, maxLen);
+        }
+
+        private static int FindLongestString(ref string[] a, int left, int right)
+        {
+            int maxLen = a[left].Length;
+            int tempLen = 0;
+            for (int i = left; i < right; i++)
+            {
+                tempLen = a[i].Length;
+                if (tempLen > maxLen)
+                {
+                    maxLen = tempLen;
+                }
+            }
+            return maxLen;
+        }
+
+        private static void InsrtSort(string[] a, int left, int right)
+        {
+            string temp;    // pivot
             int j;
             for (int i = left + 1; i < right; i++)
             {
@@ -370,6 +402,51 @@ namespace RQsortCompet
             }
         }
 
+        private static void InsrtSort_mk(string[] a, int left, int right, int d)
+        {
+            string pivot;
+            int v = -1; // value of the selected character of pivot
+            int j;
+            bool canSearch = false;
+
+            for (int i = left + 1; i <= right; i++)
+            {
+                pivot = a[i];
+                v = CharAt(pivot, d);
+                j = i - 1;
+                while (j > left - 1 && v < CharAt(a[j], d))
+                {
+                    a[j + 1] = a[j];
+                    j--;
+                }
+                a[j + 1] = pivot;
+            }
+
+            if (--d < 0)
+            {
+                return;
+            }
+            else
+            {
+                InsrtSort_mk(a, left, right, d);
+            }
+            //for (int i = 0; i < a.Length; i++)
+            //{
+            //    if (CharAt(a[i], d) != -1)
+            //    {
+            //        canSearch = true;
+            //        break;
+            //    }
+            //}
+
+            //if (canSearch)
+            //{
+            //    InsrtSort_mk(a, left, right, d);
+            //}
+        }
+        #endregion
+
+        #region Swap functions
         public static void Swap(string[] a, int i, int j)
         {
             string temp = a[i];
@@ -414,5 +491,6 @@ namespace RQsortCompet
             *a = *b;
             *b = *temp;
         }
+        #endregion
     }
 }
