@@ -45,7 +45,6 @@
             this.tsmi_Converter = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmi_Benchmark = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmi_Preference = new System.Windows.Forms.ToolStripMenuItem();
-            this.btn_Test = new System.Windows.Forms.Button();
             this.pnl_Main = new System.Windows.Forms.Panel();
             this.cmb_SortingMethod = new System.Windows.Forms.ComboBox();
             this.lbl_SortingMethod = new System.Windows.Forms.Label();
@@ -54,11 +53,13 @@
             this.lbl_Round = new System.Windows.Forms.Label();
             this.txt_Round = new System.Windows.Forms.TextBox();
             this.txt_LogPath = new System.Windows.Forms.TextBox();
-            this.button1 = new System.Windows.Forms.Button();
+            this.btn_SelectLogPath = new System.Windows.Forms.Button();
             this.btn_Benchmark = new System.Windows.Forms.Button();
             this.lbl_LogPath = new System.Windows.Forms.Label();
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.label1 = new System.Windows.Forms.Label();
+            this.lbl_Description_Benchmark = new System.Windows.Forms.Label();
+            this.lbl_TestData = new System.Windows.Forms.Label();
+            this.btn_SelectTestData = new System.Windows.Forms.Button();
+            this.txt_TestData = new System.Windows.Forms.TextBox();
             this.statusStrip.SuspendLayout();
             this.menuStrip.SuspendLayout();
             this.pnl_Main.SuspendLayout();
@@ -217,22 +218,11 @@
             this.tsmi_Preference.Text = "Preference";
             this.tsmi_Preference.Click += new System.EventHandler(this.tsmi_Preference_Click);
             // 
-            // btn_Test
-            // 
-            this.btn_Test.Location = new System.Drawing.Point(68, 256);
-            this.btn_Test.Name = "btn_Test";
-            this.btn_Test.Size = new System.Drawing.Size(75, 23);
-            this.btn_Test.TabIndex = 7;
-            this.btn_Test.Text = "test";
-            this.btn_Test.UseVisualStyleBackColor = true;
-            this.btn_Test.Click += new System.EventHandler(this.btn_Test_Click);
-            // 
             // pnl_Main
             // 
             this.pnl_Main.BackColor = System.Drawing.SystemColors.Control;
             this.pnl_Main.Controls.Add(this.cmb_SortingMethod);
             this.pnl_Main.Controls.Add(this.lbl_InputPath);
-            this.pnl_Main.Controls.Add(this.btn_Test);
             this.pnl_Main.Controls.Add(this.btn_Start);
             this.pnl_Main.Controls.Add(this.btn_Clear);
             this.pnl_Main.Controls.Add(this.btn_SelectInput);
@@ -283,13 +273,15 @@
             // 
             // grp_Benchmark
             // 
-            this.grp_Benchmark.Controls.Add(this.label1);
+            this.grp_Benchmark.Controls.Add(this.lbl_Description_Benchmark);
             this.grp_Benchmark.Controls.Add(this.lbl_Round);
-            this.grp_Benchmark.Controls.Add(this.textBox1);
             this.grp_Benchmark.Controls.Add(this.txt_Round);
+            this.grp_Benchmark.Controls.Add(this.txt_TestData);
             this.grp_Benchmark.Controls.Add(this.txt_LogPath);
-            this.grp_Benchmark.Controls.Add(this.button1);
+            this.grp_Benchmark.Controls.Add(this.btn_SelectTestData);
+            this.grp_Benchmark.Controls.Add(this.btn_SelectLogPath);
             this.grp_Benchmark.Controls.Add(this.btn_Benchmark);
+            this.grp_Benchmark.Controls.Add(this.lbl_TestData);
             this.grp_Benchmark.Controls.Add(this.lbl_LogPath);
             this.grp_Benchmark.Location = new System.Drawing.Point(3, 3);
             this.grp_Benchmark.Name = "grp_Benchmark";
@@ -301,7 +293,7 @@
             // lbl_Round
             // 
             this.lbl_Round.AutoSize = true;
-            this.lbl_Round.Location = new System.Drawing.Point(6, 20);
+            this.lbl_Round.Location = new System.Drawing.Point(6, 93);
             this.lbl_Round.Name = "lbl_Round";
             this.lbl_Round.Size = new System.Drawing.Size(37, 12);
             this.lbl_Round.TabIndex = 3;
@@ -309,7 +301,7 @@
             // 
             // txt_Round
             // 
-            this.txt_Round.Location = new System.Drawing.Point(49, 15);
+            this.txt_Round.Location = new System.Drawing.Point(49, 88);
             this.txt_Round.Name = "txt_Round";
             this.txt_Round.Size = new System.Drawing.Size(50, 22);
             this.txt_Round.TabIndex = 4;
@@ -318,22 +310,22 @@
             // txt_LogPath
             // 
             this.txt_LogPath.ForeColor = System.Drawing.SystemColors.WindowText;
-            this.txt_LogPath.Location = new System.Drawing.Point(6, 60);
+            this.txt_LogPath.Location = new System.Drawing.Point(5, 177);
             this.txt_LogPath.Name = "txt_LogPath";
             this.txt_LogPath.ReadOnly = true;
             this.txt_LogPath.Size = new System.Drawing.Size(277, 22);
             this.txt_LogPath.TabIndex = 2;
             this.txt_LogPath.Text = "D:\\Users\\Nale\\Desktop\\alghw\\log\\log.csv";
             // 
-            // button1
+            // btn_SelectLogPath
             // 
-            this.button1.Location = new System.Drawing.Point(283, 60);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(23, 23);
-            this.button1.TabIndex = 1;
-            this.button1.Text = "...";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.btn_SelectOutput_Click);
+            this.btn_SelectLogPath.Location = new System.Drawing.Point(282, 177);
+            this.btn_SelectLogPath.Name = "btn_SelectLogPath";
+            this.btn_SelectLogPath.Size = new System.Drawing.Size(23, 23);
+            this.btn_SelectLogPath.TabIndex = 1;
+            this.btn_SelectLogPath.Text = "...";
+            this.btn_SelectLogPath.UseVisualStyleBackColor = true;
+            this.btn_SelectLogPath.Click += new System.EventHandler(this.btn_SelectLogPath_Click);
             // 
             // btn_Benchmark
             // 
@@ -348,28 +340,49 @@
             // lbl_LogPath
             // 
             this.lbl_LogPath.AutoSize = true;
-            this.lbl_LogPath.Location = new System.Drawing.Point(6, 43);
+            this.lbl_LogPath.Location = new System.Drawing.Point(5, 160);
             this.lbl_LogPath.Name = "lbl_LogPath";
             this.lbl_LogPath.Size = new System.Drawing.Size(47, 12);
             this.lbl_LogPath.TabIndex = 3;
             this.lbl_LogPath.Text = "Log path";
             // 
-            // textBox1
+            // lbl_Description_Benchmark
             // 
-            this.textBox1.Location = new System.Drawing.Point(182, 15);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(50, 22);
-            this.textBox1.TabIndex = 4;
-            this.textBox1.Text = "10";
+            this.lbl_Description_Benchmark.AutoSize = true;
+            this.lbl_Description_Benchmark.Location = new System.Drawing.Point(6, 20);
+            this.lbl_Description_Benchmark.Name = "lbl_Description_Benchmark";
+            this.lbl_Description_Benchmark.Size = new System.Drawing.Size(126, 12);
+            this.lbl_Description_Benchmark.TabIndex = 3;
+            this.lbl_Description_Benchmark.Text = "Desciption for benchmark";
             // 
-            // label1
+            // lbl_TestData
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(139, 20);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(37, 12);
-            this.label1.TabIndex = 3;
-            this.label1.Text = "Round";
+            this.lbl_TestData.AutoSize = true;
+            this.lbl_TestData.Location = new System.Drawing.Point(5, 118);
+            this.lbl_TestData.Name = "lbl_TestData";
+            this.lbl_TestData.Size = new System.Drawing.Size(46, 12);
+            this.lbl_TestData.TabIndex = 3;
+            this.lbl_TestData.Text = "Test data";
+            // 
+            // btn_SelectTestData
+            // 
+            this.btn_SelectTestData.Location = new System.Drawing.Point(282, 135);
+            this.btn_SelectTestData.Name = "btn_SelectTestData";
+            this.btn_SelectTestData.Size = new System.Drawing.Size(23, 23);
+            this.btn_SelectTestData.TabIndex = 1;
+            this.btn_SelectTestData.Text = "...";
+            this.btn_SelectTestData.UseVisualStyleBackColor = true;
+            this.btn_SelectTestData.Click += new System.EventHandler(this.btn_SelectTestData_Click);
+            // 
+            // txt_TestData
+            // 
+            this.txt_TestData.ForeColor = System.Drawing.SystemColors.WindowText;
+            this.txt_TestData.Location = new System.Drawing.Point(5, 135);
+            this.txt_TestData.Name = "txt_TestData";
+            this.txt_TestData.ReadOnly = true;
+            this.txt_TestData.Size = new System.Drawing.Size(277, 22);
+            this.txt_TestData.TabIndex = 2;
+            this.txt_TestData.Text = "D:\\Users\\Nale\\Desktop\\alghw\\log\\log.csv";
             // 
             // MainFrm
             // 
@@ -419,20 +432,21 @@
         private System.Windows.Forms.ToolStripStatusLabel tssl_Time;
         private System.Windows.Forms.ToolStripMenuItem tsmi_Converter;
         private System.Windows.Forms.ToolStripMenuItem tsmi_Benchmark;
-        private System.Windows.Forms.Button btn_Test;
         private System.Windows.Forms.Panel pnl_Main;
         private System.Windows.Forms.Panel pnl_Benchmark;
         private System.Windows.Forms.GroupBox grp_Benchmark;
         private System.Windows.Forms.TextBox txt_LogPath;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button btn_SelectLogPath;
         private System.Windows.Forms.Label lbl_LogPath;
         private System.Windows.Forms.Button btn_Benchmark;
         private System.Windows.Forms.Label lbl_Round;
         private System.Windows.Forms.TextBox txt_Round;
         private System.Windows.Forms.ComboBox cmb_SortingMethod;
         private System.Windows.Forms.Label lbl_SortingMethod;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.Label lbl_Description_Benchmark;
+        private System.Windows.Forms.TextBox txt_TestData;
+        private System.Windows.Forms.Button btn_SelectTestData;
+        private System.Windows.Forms.Label lbl_TestData;
     }
 }
 

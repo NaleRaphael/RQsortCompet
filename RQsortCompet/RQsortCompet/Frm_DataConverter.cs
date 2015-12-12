@@ -16,6 +16,15 @@ namespace RQsortCompet
         public Frm_DataConverter()
         {
             InitializeComponent();
+            InitializeControl();
+        }
+
+        private void InitializeControl()
+        {
+            lbl_Desciption.Text = "This converter helps you to format your test data.\n";
+            lbl_Desciption.Text += "1. Convert all upper cases to lower cases.\n";
+            lbl_Desciption.Text += "2. Remove all punctuation marks.\n";
+            lbl_Desciption.Text += "3. Remove redundant white spaces.\n";
         }
 
         private void btn_SelectSource_Click(object sender, EventArgs e)
@@ -59,7 +68,5 @@ namespace RQsortCompet
                 MessageBox.Show(ex.Message);
             }
         }
-
-
     }
 }

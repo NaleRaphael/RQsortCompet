@@ -19,12 +19,9 @@ namespace RQsortCompet
     {
         #region Fields
         // Performance
-        private static TimeSpan _ts_read;
-        private static TimeSpan _ts_sort;
-        private static TimeSpan _ts_write;
-        private static long _ms_read;
-        private static long _ms_sort;
-        private static long _ms_write;
+        private static double _ts_read;
+        private static double _ts_sort;
+        private static double _ts_write;
         // IO
         private StreamWriter _writer;
         // Control
@@ -36,6 +33,8 @@ namespace RQsortCompet
         private Frm_DataConverter frm_dataConverter;
         // Thread
         private Thread _worker;
+
+        private enum FileDialogMode { Input = 0, output }
         #endregion
 
         public MainFrm()
@@ -46,8 +45,9 @@ namespace RQsortCompet
 
         public void InitializeControl()
         {
-            // For pnl_Benchmark
+            // For Benchmark
             this.Width = 356;
+            lbl_Description_Benchmark.Text = "Please select a file ";
             // For searching method
             cmb_SortingMethod.SelectedIndex = 0;
         }
@@ -55,24 +55,22 @@ namespace RQsortCompet
         #region Button
         private void btn_SelectInput_Click(object sender, EventArgs e)
         {
-            OpenFileDialog ofd = new OpenFileDialog();
-            ofd.InitialDirectory = @"D:\Users\Nale\Desktop\alghw\input";
-            if (ofd.ShowDialog() == DialogResult.OK)
-            {
-                if (File.Exists(ofd.FileName))
-                {
-                    txt_InputPath.Text = ofd.FileName;
-                }
-            }
+            SetFileDialog(txt_InputPath, FileDialogMode.Input);
         }
 
         private void btn_SelectOutput_Click(object sender, EventArgs e)
         {
-            SaveFileDialog sfd = new SaveFileDialog();
-            if (sfd.ShowDialog() == DialogResult.OK)
-            {
-                txt_OutputPath.Text = sfd.FileName;
-            }
+            SetFileDialog(txt_OutputPath, FileDialogMode.output);
+        }
+
+        private void btn_SelectTestData_Click(object sender, EventArgs e)
+        {
+            SetFileDialog(txt_TestData, FileDialogMode.Input);
+        }
+
+        private void btn_SelectLogPath_Click(object sender, EventArgs e)
+        {
+            SetFileDialog(txt_LogPath, FileDialogMode.Input);
         }
 
         private void btn_Start_Click(object sender, EventArgs e)
@@ -95,41 +93,68 @@ namespace RQsortCompet
                 return;
             }
             sw.Stop();
-            UpdateTimeSpan(ref sw, ref _ts_read, ref _ms_read);
+            UpdateTimeSpan(ref sw, ref _ts_read);
 
             // TODO: Using multi-threading to host sorting
             sw.Start();
             try
             {
-                SortingAlg.InsertionSort_multikey(ref data);
-                //SortingAlg.RQSort(ref data);
-                //SortingAlg.RQSort3(ref data);
-                //SortingAlg.InsertionSort(ref data);
+                MethodInfo method = GetSortingAlgorithm(cmb_SortingMethod.SelectedItem.ToString());
+                SortingAlg.FuncDelegate = (SortingAlg.AlgDelegate)Delegate.CreateDelegate(typeof(SortingAlg.AlgDelegate), method);
+                SortingAlg.Start(ref data);
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
             }
             sw.Stop();
-            UpdateTimeSpan(ref sw, ref _ts_sort, ref _ms_sort);
+            UpdateTimeSpan(ref sw, ref _ts_sort);
 
             // Export result
             sw.Start();
             ExportData(ref data, txt_OutputPath.Text);
             sw.Stop();
-            UpdateTimeSpan(ref sw, ref _ts_write, ref _ms_write);
+            UpdateTimeSpan(ref sw, ref _ts_write);
 
             tssl_Status.Text = "Done";
             tssl_Time.Text = string.Format("Time: {0}", _ts_sort.ToString());
-            ShowTimeSpan("Read", _ts_read, _ms_read);
-            ShowTimeSpan("Sort", _ts_sort, _ms_sort);
-            ShowTimeSpan("Write", _ts_write, _ms_write);
+            txt_Display.AppendText(string.Format("Method: {0}\n", cmb_SortingMethod.SelectedItem.ToString()));
+            ShowTimeSpan("reading", _ts_read);
+            ShowTimeSpan("sorting", _ts_sort);
+            ShowTimeSpan("writing", _ts_write);
 
         }
 
         private void btn_Clear_Click(object sender, EventArgs e)
         {
             txt_Display.Clear();
+        }
+
+        private void btn_Benchmark_Click(object sender, EventArgs e)
+        {
+            if (!File.Exists(txt_TestData.Text))
+            {
+                return;
+            }
+
+            string raw = File.ReadAllText(txt_TestData.Text);
+            string[] data = raw.Split(' ');
+
+            // Start benchmarking
+            try
+            {
+                MethodInfo method = GetSortingAlgorithm(cmb_SortingMethod.SelectedItem.ToString()); // Get method from cmb_SortingMethod
+                AlgBenchmark.IterationCountDownEvent += this.BenchmarkCountDown;    // Subscribe count down event
+                AlgBenchmark.FuncDelegate = (AlgBenchmark.AlgDelegate)Delegate.CreateDelegate(typeof(AlgBenchmark.AlgDelegate), method);
+                AlgBenchmark.Start(ref data, Convert.ToInt32(txt_Round.Text), txt_LogPath.Text);
+                AlgBenchmark.IterationCountDownEvent -= this.BenchmarkCountDown;    // Unsubscribe count down event
+                MessageBox.Show("Done");
+            }
+            catch (Exception ex)
+            {
+                AlgBenchmark.IterationCountDownEvent -= this.BenchmarkCountDown;    // Unsubscribe count down event
+                MessageBox.Show(ex.Message);
+            }
         }
         #endregion
 
@@ -216,15 +241,16 @@ namespace RQsortCompet
         #endregion
 
         #region Other functions
-        private void UpdateTimeSpan(ref Stopwatch sw, ref TimeSpan ts, ref long ms)
+        private void UpdateTimeSpan(ref Stopwatch sw, ref double ts)
         {
-            ts = sw.Elapsed;
-            ms = sw.ElapsedMilliseconds;
+            ts = sw.Elapsed.TotalMilliseconds;
         }
-        private void ShowTimeSpan(string str, TimeSpan ts, long ms)
+
+        private void ShowTimeSpan(string str, double ts)
         {
-            txt_Display.AppendText(string.Format("{0}: \r\nTime span: {1} \r\nTime: {2}ms \r\n", str, ts, ms));
+            txt_Display.AppendText(string.Format("Time for {0}: {1}ms \r\n", str, ts));
         }
+
         private void ExportData(ref string[] data, string destination)
         {
             _writer = new StreamWriter(txt_OutputPath.Text);
@@ -234,50 +260,56 @@ namespace RQsortCompet
             }
             _writer.Close();
         }
-        #endregion
 
-        private void btn_Test_Click(object sender, EventArgs e)
+        private void BenchmarkCountDown(IterationEventArgs e)
         {
-
+            txt_Display.AppendText(string.Format("Remaining round: {0}\n", e.IterationCount));
         }
 
-        private void btn_Benchmark_Click(object sender, EventArgs e)
+        private MethodInfo GetSortingAlgorithm(string methodName)
         {
-            if (!File.Exists(txt_InputPath.Text))
-            {
-                return;
-            }
-
-            string raw = File.ReadAllText(txt_InputPath.Text);
-            string[] data = raw.Split(' ');
-
-            // Get method from cmb_SortingMethod
-            string methodName = cmb_SortingMethod.SelectedItem.ToString();
             Type type = typeof(SortingAlg);
             MethodInfo method = type.GetMethod(
                 methodName,
                 BindingFlags.Public | BindingFlags.Static,
                 Type.DefaultBinder,
-                new[] {typeof(string[]).MakeByRefType(), typeof(int), typeof(int)},
+                new[] { typeof(string[]).MakeByRefType(), typeof(int), typeof(int) },
                 null);
-
-            // Check
             if (method == null)
             {
-                MessageBox.Show("Method not found.");
-                return;
+                throw new MethodNotFoundException(string.Format("Method: {0} is not available.", methodName));
             }
+            return method;
+        }
 
-            try
+        private void SetFileDialog(TextBox txtb, FileDialogMode fm)
+        {
+            if (fm == FileDialogMode.Input)
             {
-                AlgBenchmark.FuncDelegate = (AlgBenchmark.AlgDelegate)Delegate.CreateDelegate(typeof(AlgBenchmark.AlgDelegate), method);
-                AlgBenchmark.Start(ref data, Convert.ToInt32(txt_Round.Text), txt_LogPath.Text);
-                MessageBox.Show("Done");
+                OpenFileDialog ofd = new OpenFileDialog();
+                ofd.InitialDirectory = Properties.Settings.Default._DEFAULT_INPUT_DIRECTORY;
+                if (ofd.ShowDialog() == DialogResult.OK)
+                {
+                    if (File.Exists(ofd.FileName))
+                    {
+                        txtb.Text = ofd.FileName;
+                        Properties.Settings.Default._DEFAULT_INPUT_DIRECTORY = Path.GetDirectoryName(ofd.FileName);
+                        Properties.Settings.Default.Save();
+                    }
+                }
             }
-            catch (Exception ex)
+            else if (fm == FileDialogMode.output)
             {
-                MessageBox.Show(ex.Message);
+                SaveFileDialog sfd = new SaveFileDialog();
+                sfd.InitialDirectory = Properties.Settings.Default._DEFAULT_OUTPUT_DIRECTORY;
+                if (sfd.ShowDialog() == DialogResult.OK)
+                {
+                    txtb.Text = sfd.FileName;
+                    Properties.Settings.Default._DEFAULT_OUTPUT_DIRECTORY = Path.GetDirectoryName(sfd.FileName);
+                    Properties.Settings.Default.Save();
+                }
             }
         }
+        #endregion
     }
 }

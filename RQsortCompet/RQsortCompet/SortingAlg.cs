@@ -10,6 +10,9 @@ namespace RQsortCompet
 {
     public static class SortingAlg
     {
+        public delegate void AlgDelegate(ref string[] data, int start, int end);
+        public static AlgDelegate FuncDelegate;
+
         private static Random _rand = new Random();
 
         private static readonly int _MAX_STACK_DEPTH = Properties.Settings.Default._STACK_DEPTH;
@@ -36,17 +39,6 @@ namespace RQsortCompet
         }
         #endregion
 
-        // Test function
-        public static void ChangeSD()
-        {
-            MessageBox.Show(string.Format("{0}", _stackDepth));
-            for (int i = 0; i < 3; i++)
-            {
-                _stackDepth++;
-            }
-            MessageBox.Show(string.Format("{0}", _stackDepth));
-        }
-
         // TODO: write a version of passing the reference of string
         /// <summary>
         /// Find the character by a given index from a string.
@@ -66,10 +58,44 @@ namespace RQsortCompet
             }
         }
 
+        private static int FindLongestString(ref string[] a, int left, int right)
+        {
+            int maxLen = a[left].Length;
+            int tempLen = 0;
+            for (int i = left; i < right; i++)
+            {
+                tempLen = a[i].Length;
+                if (tempLen > maxLen)
+                {
+                    maxLen = tempLen;
+                }
+            }
+            return maxLen;
+        }
+
+        public static void Start(ref string[] data)
+        {
+            try
+            {
+                FuncDelegate(ref data, 0, data.Length-1);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
         #region Sorting algorithm
         public static void QSort(ref string[] unsorted)
         {
-            QSort(unsorted, 0, unsorted.Length - 1, 0);
+            try
+            {
+                QSort(unsorted, 0, unsorted.Length - 1, 0);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
         public static void QSort(ref string[] unsorted, int start, int end)
@@ -78,12 +104,26 @@ namespace RQsortCompet
             {
                 throw new InvalidArgException("Given index of data is out of range.");
             }
-            QSort(unsorted, start, end, _stackDepth);
+            try
+            {
+                QSort(unsorted, start, end, _stackDepth);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
         public static void QSort3(ref string[] unsorted)
         {
-            QSort3(unsorted, 0, unsorted.Length - 1, 0, _stackDepth);
+            try
+            {
+                QSort3(unsorted, 0, unsorted.Length - 1, 0, _stackDepth);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
         public static void QSort3(ref string[] unsorted, int start, int end)
@@ -92,12 +132,26 @@ namespace RQsortCompet
             {
                 throw new InvalidArgException("Given index of data is out of range.");
             }
-            QSort3(unsorted, start, end, 0, _stackDepth);
+            try
+            {
+                QSort3(unsorted, start, end, 0, _stackDepth);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
         public static void RQSort(ref string[] unsorted)
         {
-            RQSort(unsorted, 0, unsorted.Length - 1, _stackDepth);
+            try
+            {
+                RQSort(unsorted, 0, unsorted.Length - 1, _stackDepth);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
         public static void RQSort(ref string[] unsorted, int start, int end)
@@ -106,12 +160,27 @@ namespace RQsortCompet
             {
                 throw new InvalidArgException("Given index of data is out of range.");
             }
-            RQSort(unsorted, start, end, _stackDepth);
+
+            try
+            {
+                RQSort(unsorted, start, end, _stackDepth);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
         public static void RQSort3(ref string[] unsorted)
         {
-            RQSort3(unsorted, 0, unsorted.Length - 1, 0, _stackDepth);
+            try
+            {
+                RQSort3(unsorted, 0, unsorted.Length - 1, 0, _stackDepth);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
         public static void RQSort3(ref string[] unsorted, int start, int end)
@@ -120,7 +189,83 @@ namespace RQsortCompet
             {
                 throw new InvalidArgException("Given index of data is out of range.");
             }
-            RQSort3(unsorted, start, end, 0, _stackDepth);
+
+            try
+            {
+                RQSort3(unsorted, start, end, 0, _stackDepth);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public static void RQSort3_hybrid(ref string[] unsorted)
+        {
+
+        }
+
+        public static void RQSort3_hybrid(ref string[] unsorted, int start, int end)
+        {
+            if (start < 0 || end > unsorted.Length - 1)
+            {
+                throw new InvalidArgException("Given index of data is out of range.");
+            }
+
+        }
+
+        public static void InsertionSort(ref string[] unsorted)
+        {
+            try
+            {
+                InsrtSort(unsorted, 0, unsorted.Length);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public static void InsertionSort(ref string[] unsorted, int left, int right)
+        {
+            if (left < 0 || right > unsorted.Length - 1)
+            {
+                throw new InvalidArgException("Given index of data is out of range.");
+            }
+
+            try
+            {
+                InsrtSort(unsorted, left, right);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public static void InsertionSort_multikey(ref string[] unsorted)
+        {
+            try
+            {
+                InsertionSort_multikey(ref unsorted, 0, unsorted.Length - 1);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public static void InsertionSort_multikey(ref string[] unsorted, int left, int right)
+        {
+            int maxLen = FindLongestString(ref unsorted, left, right);
+            try
+            {
+                InsrtSort_mk(unsorted, left, right, maxLen);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
         private static void QSort(string[] a, int p, int r, int sd)
@@ -281,6 +426,11 @@ namespace RQsortCompet
             }
         }
 
+        private static void RQSort3_hybrid(string[] a, int lo, int hi, int d, int sd)
+        {
+
+        }
+
         private static int Partition(string[] a, int p, int r)
         {
             string v = a[r];
@@ -349,42 +499,6 @@ namespace RQsortCompet
             }
         }
 
-        public static void InsertionSort(ref string[] a)
-        {
-            InsrtSort(a, 0, a.Length);
-        }
-
-        public static void InsertionSort(ref string[] a, int left, int right)
-        {
-            InsrtSort(a, left, right);
-        }
-
-        public static void InsertionSort_multikey(ref string[] a)
-        {
-            InsertionSort_multikey(ref a, 0, a.Length - 1);
-        }
-
-        public static void InsertionSort_multikey(ref string[] a, int left, int right)
-        {
-            int maxLen = FindLongestString(ref a, left, right);
-            InsrtSort_mk(a, left, right, maxLen);
-        }
-
-        private static int FindLongestString(ref string[] a, int left, int right)
-        {
-            int maxLen = a[left].Length;
-            int tempLen = 0;
-            for (int i = left; i < right; i++)
-            {
-                tempLen = a[i].Length;
-                if (tempLen > maxLen)
-                {
-                    maxLen = tempLen;
-                }
-            }
-            return maxLen;
-        }
-
         private static void InsrtSort(string[] a, int left, int right)
         {
             string temp;    // pivot
@@ -407,7 +521,6 @@ namespace RQsortCompet
             string pivot;
             int v = -1; // value of the selected character of pivot
             int j;
-            bool canSearch = false;
 
             for (int i = left + 1; i <= right; i++)
             {
@@ -430,19 +543,6 @@ namespace RQsortCompet
             {
                 InsrtSort_mk(a, left, right, d);
             }
-            //for (int i = 0; i < a.Length; i++)
-            //{
-            //    if (CharAt(a[i], d) != -1)
-            //    {
-            //        canSearch = true;
-            //        break;
-            //    }
-            //}
-
-            //if (canSearch)
-            //{
-            //    InsrtSort_mk(a, left, right, d);
-            //}
         }
         #endregion
 

@@ -5,5 +5,11 @@
     <Setting Name="_STACK_DEPTH" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">10</Value>
     </Setting>
+    <Setting Name="_DEFAULT_INPUT_DIRECTORY" Type="System.String" Scope="User">
+      <Value Profile="(Default)">@"D:\Users\Nale\Desktop\alghw\input"</Value>
+    </Setting>
+    <Setting Name="_DEFAULT_OUTPUT_DIRECTORY" Type="System.String" Scope="User">
+      <Value Profile="(Default)">@"D:\Users\Nale\Desktop\alghw\output"</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

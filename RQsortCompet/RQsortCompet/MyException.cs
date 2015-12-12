@@ -19,7 +19,14 @@ namespace RQsortCompet
         public MyBenchmarkException(string message)
             : base(message)
         {
+        }
+    }
 
+    public class MethodNotFoundException : Exception
+    {
+        public MethodNotFoundException(string message)
+            : base(message)
+        {
         }
     }
 }

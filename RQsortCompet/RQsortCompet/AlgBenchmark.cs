@@ -13,7 +13,9 @@ namespace RQsortCompet
     {
         public delegate void AlgDelegate(ref string[] data, int start, int end);
         public static AlgDelegate FuncDelegate;
-        
+
+        public delegate void IterationCountDownEventHandler(IterationEventArgs e);
+        public static event IterationCountDownEventHandler IterationCountDownEvent;
 
         private static Stopwatch _sw = new Stopwatch();
 
@@ -43,6 +45,7 @@ namespace RQsortCompet
 
             string[] log = new string[stepNum];
             string[] testData = new string[data.Length];
+            IterationEventArgs iterArgs = new IterationEventArgs(stepNum);
 
             try
             {
@@ -52,6 +55,9 @@ namespace RQsortCompet
                     _sw.Start();
                     func(ref testData, 0, step * i - 1);
                     _sw.Stop();
+
+                    iterArgs.IterationCount -= 1;       // Count down
+                    IterationCountDownEvent(iterArgs);  // Fire event to notice host
                     log[i-1] = string.Format("{0}, {1}", step * i, _sw.ElapsedMilliseconds.ToString());
                 }
                 WriteLog(logPath, log);
@@ -83,6 +89,14 @@ namespace RQsortCompet
                 throw ex;
             }
         }
+    }
 
+    public class IterationEventArgs : EventArgs
+    {
+        public int IterationCount { get; set; }
+        public IterationEventArgs(int num)
+        {
+            IterationCount = num;
+        }
     }
 }

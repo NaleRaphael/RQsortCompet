@@ -34,5 +34,29 @@ namespace RQsortCompet.Properties {
                 this["_STACK_DEPTH"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("@\"D:\\Users\\Nale\\Desktop\\alghw\\input\"")]
+        public string _DEFAULT_INPUT_DIRECTORY {
+            get {
+                return ((string)(this["_DEFAULT_INPUT_DIRECTORY"]));
+            }
+            set {
+                this["_DEFAULT_INPUT_DIRECTORY"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("@\"D:\\Users\\Nale\\Desktop\\alghw\\output\"")]
+        public string _DEFAULT_OUTPUT_DIRECTORY {
+            get {
+                return ((string)(this["_DEFAULT_OUTPUT_DIRECTORY"]));
+            }
+            set {
+                this["_DEFAULT_OUTPUT_DIRECTORY"] = value;
+            }
+        }
     }
 }
