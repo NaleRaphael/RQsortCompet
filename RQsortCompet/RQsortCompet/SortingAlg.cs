@@ -171,6 +171,11 @@ namespace RQsortCompet
             }
         }
 
+        public static void RQSort3(string[] unsorted)
+        {
+            RQSort3(unsorted, 0, unsorted.Length - 1, 0, _stackDepth);
+        }
+
         public static void RQSort3(ref string[] unsorted)
         {
             try
@@ -202,7 +207,14 @@ namespace RQsortCompet
 
         public static void RQSort3_hybrid(ref string[] unsorted)
         {
-
+            try
+            {
+                RQSort3_hybrid(unsorted, 0, unsorted.Length - 1, 0, _stackDepth);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
         public static void RQSort3_hybrid(ref string[] unsorted, int start, int end)
@@ -212,6 +224,14 @@ namespace RQsortCompet
                 throw new InvalidArgException("Given index of data is out of range.");
             }
 
+            try
+            {
+                RQSort3_hybrid(unsorted, start, end, 0, _stackDepth);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
         public static void InsertionSort(ref string[] unsorted)

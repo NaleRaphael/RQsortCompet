@@ -50,16 +50,17 @@
             this.lbl_SortingMethod = new System.Windows.Forms.Label();
             this.pnl_Benchmark = new System.Windows.Forms.Panel();
             this.grp_Benchmark = new System.Windows.Forms.GroupBox();
+            this.lbl_Description_Benchmark = new System.Windows.Forms.Label();
             this.lbl_Round = new System.Windows.Forms.Label();
             this.txt_Round = new System.Windows.Forms.TextBox();
+            this.txt_TestData = new System.Windows.Forms.TextBox();
             this.txt_LogPath = new System.Windows.Forms.TextBox();
+            this.btn_SelectTestData = new System.Windows.Forms.Button();
             this.btn_SelectLogPath = new System.Windows.Forms.Button();
             this.btn_Benchmark = new System.Windows.Forms.Button();
-            this.lbl_LogPath = new System.Windows.Forms.Label();
-            this.lbl_Description_Benchmark = new System.Windows.Forms.Label();
             this.lbl_TestData = new System.Windows.Forms.Label();
-            this.btn_SelectTestData = new System.Windows.Forms.Button();
-            this.txt_TestData = new System.Windows.Forms.TextBox();
+            this.lbl_LogPath = new System.Windows.Forms.Label();
+            this.btn_Test = new System.Windows.Forms.Button();
             this.statusStrip.SuspendLayout();
             this.menuStrip.SuspendLayout();
             this.pnl_Main.SuspendLayout();
@@ -221,6 +222,7 @@
             // pnl_Main
             // 
             this.pnl_Main.BackColor = System.Drawing.SystemColors.Control;
+            this.pnl_Main.Controls.Add(this.btn_Test);
             this.pnl_Main.Controls.Add(this.cmb_SortingMethod);
             this.pnl_Main.Controls.Add(this.lbl_InputPath);
             this.pnl_Main.Controls.Add(this.btn_Start);
@@ -247,6 +249,7 @@
             "RQSort",
             "QSort3",
             "RQSort3",
+            "RQSort3_hybrid",
             "InsertionSort",
             "InsertionSort_multikey"});
             this.cmb_SortingMethod.Location = new System.Drawing.Point(86, 96);
@@ -290,6 +293,15 @@
             this.grp_Benchmark.TabStop = false;
             this.grp_Benchmark.Text = "Benchmark";
             // 
+            // lbl_Description_Benchmark
+            // 
+            this.lbl_Description_Benchmark.AutoSize = true;
+            this.lbl_Description_Benchmark.Location = new System.Drawing.Point(6, 20);
+            this.lbl_Description_Benchmark.Name = "lbl_Description_Benchmark";
+            this.lbl_Description_Benchmark.Size = new System.Drawing.Size(126, 12);
+            this.lbl_Description_Benchmark.TabIndex = 3;
+            this.lbl_Description_Benchmark.Text = "Desciption for benchmark";
+            // 
             // lbl_Round
             // 
             this.lbl_Round.AutoSize = true;
@@ -307,6 +319,16 @@
             this.txt_Round.TabIndex = 4;
             this.txt_Round.Text = "10";
             // 
+            // txt_TestData
+            // 
+            this.txt_TestData.ForeColor = System.Drawing.SystemColors.WindowText;
+            this.txt_TestData.Location = new System.Drawing.Point(5, 135);
+            this.txt_TestData.Name = "txt_TestData";
+            this.txt_TestData.ReadOnly = true;
+            this.txt_TestData.Size = new System.Drawing.Size(277, 22);
+            this.txt_TestData.TabIndex = 2;
+            this.txt_TestData.Text = "D:\\Users\\Nale\\Desktop\\alghw\\log\\log.csv";
+            // 
             // txt_LogPath
             // 
             this.txt_LogPath.ForeColor = System.Drawing.SystemColors.WindowText;
@@ -316,6 +338,16 @@
             this.txt_LogPath.Size = new System.Drawing.Size(277, 22);
             this.txt_LogPath.TabIndex = 2;
             this.txt_LogPath.Text = "D:\\Users\\Nale\\Desktop\\alghw\\log\\log.csv";
+            // 
+            // btn_SelectTestData
+            // 
+            this.btn_SelectTestData.Location = new System.Drawing.Point(282, 135);
+            this.btn_SelectTestData.Name = "btn_SelectTestData";
+            this.btn_SelectTestData.Size = new System.Drawing.Size(23, 23);
+            this.btn_SelectTestData.TabIndex = 1;
+            this.btn_SelectTestData.Text = "...";
+            this.btn_SelectTestData.UseVisualStyleBackColor = true;
+            this.btn_SelectTestData.Click += new System.EventHandler(this.btn_SelectTestData_Click);
             // 
             // btn_SelectLogPath
             // 
@@ -337,24 +369,6 @@
             this.btn_Benchmark.UseVisualStyleBackColor = true;
             this.btn_Benchmark.Click += new System.EventHandler(this.btn_Benchmark_Click);
             // 
-            // lbl_LogPath
-            // 
-            this.lbl_LogPath.AutoSize = true;
-            this.lbl_LogPath.Location = new System.Drawing.Point(5, 160);
-            this.lbl_LogPath.Name = "lbl_LogPath";
-            this.lbl_LogPath.Size = new System.Drawing.Size(47, 12);
-            this.lbl_LogPath.TabIndex = 3;
-            this.lbl_LogPath.Text = "Log path";
-            // 
-            // lbl_Description_Benchmark
-            // 
-            this.lbl_Description_Benchmark.AutoSize = true;
-            this.lbl_Description_Benchmark.Location = new System.Drawing.Point(6, 20);
-            this.lbl_Description_Benchmark.Name = "lbl_Description_Benchmark";
-            this.lbl_Description_Benchmark.Size = new System.Drawing.Size(126, 12);
-            this.lbl_Description_Benchmark.TabIndex = 3;
-            this.lbl_Description_Benchmark.Text = "Desciption for benchmark";
-            // 
             // lbl_TestData
             // 
             this.lbl_TestData.AutoSize = true;
@@ -364,25 +378,24 @@
             this.lbl_TestData.TabIndex = 3;
             this.lbl_TestData.Text = "Test data";
             // 
-            // btn_SelectTestData
+            // lbl_LogPath
             // 
-            this.btn_SelectTestData.Location = new System.Drawing.Point(282, 135);
-            this.btn_SelectTestData.Name = "btn_SelectTestData";
-            this.btn_SelectTestData.Size = new System.Drawing.Size(23, 23);
-            this.btn_SelectTestData.TabIndex = 1;
-            this.btn_SelectTestData.Text = "...";
-            this.btn_SelectTestData.UseVisualStyleBackColor = true;
-            this.btn_SelectTestData.Click += new System.EventHandler(this.btn_SelectTestData_Click);
+            this.lbl_LogPath.AutoSize = true;
+            this.lbl_LogPath.Location = new System.Drawing.Point(5, 160);
+            this.lbl_LogPath.Name = "lbl_LogPath";
+            this.lbl_LogPath.Size = new System.Drawing.Size(47, 12);
+            this.lbl_LogPath.TabIndex = 3;
+            this.lbl_LogPath.Text = "Log path";
             // 
-            // txt_TestData
+            // btn_Test
             // 
-            this.txt_TestData.ForeColor = System.Drawing.SystemColors.WindowText;
-            this.txt_TestData.Location = new System.Drawing.Point(5, 135);
-            this.txt_TestData.Name = "txt_TestData";
-            this.txt_TestData.ReadOnly = true;
-            this.txt_TestData.Size = new System.Drawing.Size(277, 22);
-            this.txt_TestData.TabIndex = 2;
-            this.txt_TestData.Text = "D:\\Users\\Nale\\Desktop\\alghw\\log\\log.csv";
+            this.btn_Test.Location = new System.Drawing.Point(68, 256);
+            this.btn_Test.Name = "btn_Test";
+            this.btn_Test.Size = new System.Drawing.Size(75, 23);
+            this.btn_Test.TabIndex = 9;
+            this.btn_Test.Text = "test";
+            this.btn_Test.UseVisualStyleBackColor = true;
+            this.btn_Test.Click += new System.EventHandler(this.btn_Test_Click);
             // 
             // MainFrm
             // 
@@ -447,6 +460,7 @@
         private System.Windows.Forms.TextBox txt_TestData;
         private System.Windows.Forms.Button btn_SelectTestData;
         private System.Windows.Forms.Label lbl_TestData;
+        private System.Windows.Forms.Button btn_Test;
     }
 }
 

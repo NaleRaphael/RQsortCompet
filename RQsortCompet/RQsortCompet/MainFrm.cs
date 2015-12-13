@@ -33,6 +33,10 @@ namespace RQsortCompet
         private Frm_DataConverter frm_dataConverter;
         // Thread
         private Thread _worker;
+        private delegate void SortingJobEventHandler(ref string[] data);
+        private delegate void SortingJobFinishedEventHandler(SortingJobFinishedEventArgs e);
+        private static event SortingJobFinishedEventHandler SortingFinishedEvent;
+        private delegate void SetTextDelegate(TextBox txtb, string text);
 
         private enum FileDialogMode { Input = 0, output }
         #endregion
@@ -49,7 +53,7 @@ namespace RQsortCompet
             this.Width = 356;
             lbl_Description_Benchmark.Text = "Please select a file ";
             // For searching method
-            cmb_SortingMethod.SelectedIndex = 0;
+            cmb_SortingMethod.SelectedIndex = 3;
         }
 
         #region Button
@@ -73,61 +77,26 @@ namespace RQsortCompet
             SetFileDialog(txt_LogPath, FileDialogMode.Input);
         }
 
-        private void btn_Start_Click(object sender, EventArgs e)
-        {
-            // Read file and split them with space
-            string raw;
-            string[] data;
-            Stopwatch sw = new Stopwatch();
-
-            // Read file and generate data
-            sw.Start();
-            try
-            {
-                raw = File.ReadAllText(txt_InputPath.Text);
-                data = raw.Split(' ');
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-                return;
-            }
-            sw.Stop();
-            UpdateTimeSpan(ref sw, ref _ts_read);
-
-            // TODO: Using multi-threading to host sorting
-            sw.Start();
-            try
-            {
-                MethodInfo method = GetSortingAlgorithm(cmb_SortingMethod.SelectedItem.ToString());
-                SortingAlg.FuncDelegate = (SortingAlg.AlgDelegate)Delegate.CreateDelegate(typeof(SortingAlg.AlgDelegate), method);
-                SortingAlg.Start(ref data);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
-            sw.Stop();
-            UpdateTimeSpan(ref sw, ref _ts_sort);
-
-            // Export result
-            sw.Start();
-            ExportData(ref data, txt_OutputPath.Text);
-            sw.Stop();
-            UpdateTimeSpan(ref sw, ref _ts_write);
-
-            tssl_Status.Text = "Done";
-            tssl_Time.Text = string.Format("Time: {0}", _ts_sort.ToString());
-            txt_Display.AppendText(string.Format("Method: {0}\n", cmb_SortingMethod.SelectedItem.ToString()));
-            ShowTimeSpan("reading", _ts_read);
-            ShowTimeSpan("sorting", _ts_sort);
-            ShowTimeSpan("writing", _ts_write);
-
-        }
-
         private void btn_Clear_Click(object sender, EventArgs e)
         {
             txt_Display.Clear();
+        }
+
+        private void btn_Start_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                string methodName = cmb_SortingMethod.SelectedItem.ToString();
+                string inputPath = txt_InputPath.Text;
+                SortingFinishedEvent += UpdateInformation;      // Subscribe sorting job finished event
+                _worker = new Thread(() => StartSorting(inputPath, methodName));
+                _worker.Start();
+            }
+            catch (Exception ex)
+            {
+                SortingFinishedEvent -= UpdateInformation;  // Unsubscribe sorting job finished event
+                MessageBox.Show(ex.Message);
+            }
         }
 
         private void btn_Benchmark_Click(object sender, EventArgs e)
@@ -137,24 +106,36 @@ namespace RQsortCompet
                 return;
             }
 
-            string raw = File.ReadAllText(txt_TestData.Text);
-            string[] data = raw.Split(' ');
-
-            // Start benchmarking
             try
             {
-                MethodInfo method = GetSortingAlgorithm(cmb_SortingMethod.SelectedItem.ToString()); // Get method from cmb_SortingMethod
-                AlgBenchmark.IterationCountDownEvent += this.BenchmarkCountDown;    // Subscribe count down event
-                AlgBenchmark.FuncDelegate = (AlgBenchmark.AlgDelegate)Delegate.CreateDelegate(typeof(AlgBenchmark.AlgDelegate), method);
-                AlgBenchmark.Start(ref data, Convert.ToInt32(txt_Round.Text), txt_LogPath.Text);
-                AlgBenchmark.IterationCountDownEvent -= this.BenchmarkCountDown;    // Unsubscribe count down event
-                MessageBox.Show("Done");
+                string methodName = cmb_SortingMethod.SelectedItem.ToString();
+                string inputPath = txt_InputPath.Text;
+                _worker = new Thread(() => StartBenchmarking(methodName, inputPath, Convert.ToInt32(txt_Round.Text), txt_LogPath.Text));
+                _worker.Start();
             }
             catch (Exception ex)
             {
-                AlgBenchmark.IterationCountDownEvent -= this.BenchmarkCountDown;    // Unsubscribe count down event
                 MessageBox.Show(ex.Message);
             }
+
+            //string raw = File.ReadAllText(txt_TestData.Text);
+            //string[] data = raw.Split(' ');
+
+            //// Start benchmarking
+            //try
+            //{
+            //    MethodInfo method = GetSortingAlgorithm(cmb_SortingMethod.SelectedItem.ToString()); // Get method from cmb_SortingMethod
+            //    AlgBenchmark.IterationCountDownEvent += this.BenchmarkCountDown;    // Subscribe count down event
+            //    AlgBenchmark.FuncDelegate = (AlgBenchmark.AlgDelegate)Delegate.CreateDelegate(typeof(AlgBenchmark.AlgDelegate), method);
+            //    AlgBenchmark.Start(ref data, Convert.ToInt32(txt_Round.Text), txt_LogPath.Text);
+            //    AlgBenchmark.IterationCountDownEvent -= this.BenchmarkCountDown;    // Unsubscribe count down event
+            //    MessageBox.Show("Done");
+            //}
+            //catch (Exception ex)
+            //{
+            //    AlgBenchmark.IterationCountDownEvent -= this.BenchmarkCountDown;    // Unsubscribe count down event
+            //    MessageBox.Show(ex.Message);
+            //}
         }
         #endregion
 
@@ -263,7 +244,7 @@ namespace RQsortCompet
 
         private void BenchmarkCountDown(IterationEventArgs e)
         {
-            txt_Display.AppendText(string.Format("Remaining round: {0}\n", e.IterationCount));
+            SetText(txt_Display, string.Format("Remaining round: {0}\r\n", e.IterationCount));
         }
 
         private MethodInfo GetSortingAlgorithm(string methodName)
@@ -310,6 +291,143 @@ namespace RQsortCompet
                 }
             }
         }
+
+        private void StartSorting(string dataPath, string methodName)
+        {
+            // Read file and split them with space
+            string raw;
+            string[] data;
+            Stopwatch sw = new Stopwatch();
+
+            // Read file and generate data
+            sw.Restart();
+            try
+            {
+                raw = File.ReadAllText(dataPath);
+                data = raw.Split(' ');
+            }
+            catch (Exception ex)
+            {
+                //throw ex;
+                MessageBox.Show(ex.Message);
+                return;
+            }
+            sw.Stop();
+            UpdateTimeSpan(ref sw, ref _ts_read);
+
+            // TODO: Using multi-threading to host sorting
+            try
+            {
+                MethodInfo method = GetSortingAlgorithm(methodName);
+                SortingAlg.FuncDelegate = (SortingAlg.AlgDelegate)Delegate.CreateDelegate(typeof(SortingAlg.AlgDelegate), method);
+                sw.Restart();
+                SortingAlg.Start(ref data);
+                sw.Stop();
+                UpdateTimeSpan(ref sw, ref _ts_sort);
+            }
+            catch (Exception ex)
+            {
+                //throw ex;
+                MessageBox.Show(ex.Message);
+                return;
+            }
+
+            // Export result
+            sw.Restart();
+            ExportData(ref data, txt_OutputPath.Text);
+            sw.Stop();
+            UpdateTimeSpan(ref sw, ref _ts_write);
+
+            // Release memory
+            data = null;
+            raw = null;
+            GC.Collect();
+
+            SortingJobFinishedEventArgs e = new SortingJobFinishedEventArgs(methodName, sw.Elapsed.TotalMilliseconds);
+            SortingFinishedEvent(e);     // fire event to notice that sorting is done
+            
+        }
+
+        private void StartBenchmarking(string selectedAlg, string dataPath, int round, string logPath)
+        {
+            string raw = File.ReadAllText(dataPath);
+            string[] data = raw.Split(' ');
+
+            // Start benchmarking
+            try
+            {
+                MethodInfo method = GetSortingAlgorithm(selectedAlg); // Get method from cmb_SortingMethod
+                AlgBenchmark.IterationCountDownEvent += this.BenchmarkCountDown;    // Subscribe count down event
+                AlgBenchmark.FuncDelegate = (AlgBenchmark.AlgDelegate)Delegate.CreateDelegate(typeof(AlgBenchmark.AlgDelegate), method);
+                AlgBenchmark.Start(ref data, round, logPath);
+                AlgBenchmark.IterationCountDownEvent -= this.BenchmarkCountDown;    // Unsubscribe count down event
+                MessageBox.Show("Done");
+            }
+            catch (Exception ex)
+            {
+                AlgBenchmark.IterationCountDownEvent -= this.BenchmarkCountDown;    // Unsubscribe count down event
+                MessageBox.Show(ex.Message);
+                return;
+            }
+        }
+
+        private void UpdateInformation(SortingJobFinishedEventArgs e)
+        {
+            // Update information to textbox
+            string outputText = string.Format("Method: {0}\r\n", e.SelectedAlgName);
+            outputText += string.Format("Time for reading: {0}ms\r\n", _ts_read);
+            outputText += string.Format("Time for sorting: {0}ms\r\n", _ts_sort);
+            outputText += string.Format("Time for writing: {0}ms\r\n", _ts_write);
+            SetText(txt_Display, outputText);
+            // Update status
+            tssl_Status.Text = "Done";
+            tssl_Time.Text = string.Format("Time: {0}", e.TimeTaken.ToString());
+            // Unsubscribe sorting job finished event
+            SortingFinishedEvent -= UpdateInformation;
+        }
+
+        private void SetText(TextBox txtb, string text)
+        {
+            if (txtb.InvokeRequired)
+            {
+                SetTextDelegate d = new SetTextDelegate(SetText);
+                this.Invoke(d, new object[] { txtb, text });
+            }
+            else
+            {
+                txtb.Text += text;
+            }
+        }
         #endregion
+
+        private void btn_Test_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                string methodName = cmb_SortingMethod.SelectedItem.ToString();
+                string inputPath = txt_InputPath.Text;
+                //SortingFinishedEvent += UpdateInformation;      // Subscribe sorting job finished event
+                //_worker = new Thread(() => StartSorting(inputPath, methodName));
+                _worker = new Thread(() => StartBenchmarking(methodName, inputPath, Convert.ToInt32(txt_Round.Text), txt_LogPath.Text));
+                _worker.Start();
+            }
+            catch (Exception ex)
+            {
+                //SortingFinishedEvent -= UpdateInformation;  // Unsubscribe sorting job finished event
+                MessageBox.Show(ex.Message);
+            }
+        }
+    }
+
+    public class SortingJobFinishedEventArgs : EventArgs
+    {
+        public string SelectedAlgName { get; set; }
+        public double TimeTaken { get; set; }
+
+        public SortingJobFinishedEventArgs(string algName, double timeTaken)
+        {
+            SelectedAlgName = algName;
+            TimeTaken = timeTaken;
+        }
     }
 }

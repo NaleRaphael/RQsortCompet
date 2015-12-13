@@ -46,7 +46,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AlgBenchmark.cs" />
-    <Compile Include="ArrayView.cs" />
     <Compile Include="DataConverter.cs" />
     <Compile Include="Frm_DataConverter.cs">
       <SubType>Form</SubType>

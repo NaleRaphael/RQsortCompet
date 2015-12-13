@@ -31,7 +31,14 @@ namespace RQsortCompet
                 throw new InvalidArgException("logPath not found.");
             }
 
-            Benchmark(FuncDelegate, ref data, stepNum, logPath);
+            try
+            {
+                Benchmark(FuncDelegate, ref data, stepNum, logPath);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
         private static void Benchmark(AlgDelegate func, ref string[] data, int stepNum, string logPath)
