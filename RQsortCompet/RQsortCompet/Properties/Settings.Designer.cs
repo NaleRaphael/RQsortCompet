@@ -58,5 +58,17 @@ namespace RQsortCompet.Properties {
                 this["_DEFAULT_OUTPUT_DIRECTORY"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("400")]
+        public int _SWITCH_THRESHOLD {
+            get {
+                return ((int)(this["_SWITCH_THRESHOLD"]));
+            }
+            set {
+                this["_SWITCH_THRESHOLD"] = value;
+            }
+        }
     }
 }

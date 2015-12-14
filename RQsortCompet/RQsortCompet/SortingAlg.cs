@@ -17,6 +17,7 @@ namespace RQsortCompet
 
         private static readonly int _MAX_STACK_DEPTH = Properties.Settings.Default._STACK_DEPTH;
         private static int _stackDepth = 10;
+        private static readonly int _SWITCH_THRESHOLD = Properties.Settings.Default._SWITCH_THRESHOLD;
 
         #region Properties
         private static int StackDepth
@@ -448,7 +449,54 @@ namespace RQsortCompet
 
         private static void RQSort3_hybrid(string[] a, int lo, int hi, int d, int sd)
         {
+            // Check
+            if (hi <= lo)
+            {
+                return;
+            }
+            else if (hi - lo < _SWITCH_THRESHOLD)
+            {
+                InsrtSort(a, lo, hi);
+            }
 
+            // Select index of pivot
+            int p = _rand.Next(lo + 1, hi);
+
+            // Do three-way partition
+            int lt, gt, v;
+            Partition3(a, lo, hi, d, sd, out lt, out gt, out v);
+
+            if (--sd >= 0)
+            {
+                if (v >= 0)
+                {
+                    Parallel.Invoke(
+                        () => RQSort3(a, lo, lt - 1, d, sd),    // Left part
+                        () => RQSort3(a, lt, gt, d + 1, sd),    // Middle part
+                        () => RQSort3(a, gt + 1, hi, d, sd)     // Right part
+                    );
+                }
+                else
+                {
+                    Parallel.Invoke(
+                        () => RQSort3(a, lo, lt - 1, d, sd),    // Left part
+                        () => RQSort3(a, gt + 1, hi, d, sd)     // Right part
+                    );
+                }
+
+            }
+            else
+            {
+                // Left part
+                RQSort3(a, lo, lt - 1, d, sd);
+                // Middle part (with same prefix, so it starts handling substring)
+                if (v >= 0)
+                {
+                    RQSort3(a, lt, gt, d + 1, sd);
+                }
+                // Right part
+                RQSort3(a, gt + 1, hi, d, sd);
+            }
         }
 
         private static int Partition(string[] a, int p, int r)
@@ -593,23 +641,6 @@ namespace RQsortCompet
             int temp = a;
             a = b;
             b = temp;
-        }
-        /*
-        unsafe private static void UnsafeSwap(string* a, string* b)
-        {
-            char** temp = a;
-            a = b;
-            b = temp;
-        }*/
-
-        unsafe public static void UnsafeSwap(char* a, char* b)
-        {
-            /*char* temp = a;
-            a = b;
-            b = temp;*/
-            char* temp = a;
-            *a = *b;
-            *b = *temp;
         }
         #endregion
     }

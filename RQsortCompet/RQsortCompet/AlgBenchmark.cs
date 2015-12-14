@@ -59,13 +59,14 @@ namespace RQsortCompet
                 for (int i = 1; i <= stepNum; i++)
                 {
                     Array.Copy(data, testData, step * i);
-                    _sw.Start();
+                    _sw.Restart();
                     func(ref testData, 0, step * i - 1);
                     _sw.Stop();
 
                     iterArgs.IterationCount -= 1;       // Count down
                     IterationCountDownEvent(iterArgs);  // Fire event to notice host
-                    log[i-1] = string.Format("{0}, {1}", step * i, _sw.ElapsedMilliseconds.ToString());
+                    //log[i - 1] = string.Format("{0}, {1}", step * i, ((_sw.ElapsedTicks * 1000000.0 / Stopwatch.Frequency)).ToString());
+                    log[i - 1] = string.Format("{0}, {1}", step * i, (_sw.Elapsed.TotalMilliseconds).ToString());
                 }
                 WriteLog(logPath, log);
             }

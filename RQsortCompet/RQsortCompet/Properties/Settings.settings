@@ -11,5 +11,8 @@
     <Setting Name="_DEFAULT_OUTPUT_DIRECTORY" Type="System.String" Scope="User">
       <Value Profile="(Default)">@"D:\Users\Nale\Desktop\alghw\output"</Value>
     </Setting>
+    <Setting Name="_SWITCH_THRESHOLD" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">400</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

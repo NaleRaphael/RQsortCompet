@@ -117,25 +117,94 @@ namespace RQsortCompet
             {
                 MessageBox.Show(ex.Message);
             }
+        }
+        #endregion
 
-            //string raw = File.ReadAllText(txt_TestData.Text);
-            //string[] data = raw.Split(' ');
+        #region Main functions
+        private void StartSorting(string dataPath, string methodName)
+        {
+            // Read file and split them with space
+            string raw;
+            string[] data;
+            Stopwatch sw = new Stopwatch();
 
-            //// Start benchmarking
-            //try
-            //{
-            //    MethodInfo method = GetSortingAlgorithm(cmb_SortingMethod.SelectedItem.ToString()); // Get method from cmb_SortingMethod
-            //    AlgBenchmark.IterationCountDownEvent += this.BenchmarkCountDown;    // Subscribe count down event
-            //    AlgBenchmark.FuncDelegate = (AlgBenchmark.AlgDelegate)Delegate.CreateDelegate(typeof(AlgBenchmark.AlgDelegate), method);
-            //    AlgBenchmark.Start(ref data, Convert.ToInt32(txt_Round.Text), txt_LogPath.Text);
-            //    AlgBenchmark.IterationCountDownEvent -= this.BenchmarkCountDown;    // Unsubscribe count down event
-            //    MessageBox.Show("Done");
-            //}
-            //catch (Exception ex)
-            //{
-            //    AlgBenchmark.IterationCountDownEvent -= this.BenchmarkCountDown;    // Unsubscribe count down event
-            //    MessageBox.Show(ex.Message);
-            //}
+            // Read file and generate data
+            sw.Restart();
+            try
+            {
+                raw = File.ReadAllText(dataPath);
+                data = raw.Split(' ');
+
+                FileStream fs = File.OpenRead(dataPath);
+                BufferedStream bs = new BufferedStream(fs);
+                StreamReader reader = new StreamReader(bs);
+
+
+
+            }
+            catch (Exception ex)
+            {
+                //throw ex;
+                MessageBox.Show(ex.Message);
+                return;
+            }
+            sw.Stop();
+            UpdateTimeSpan(ref sw, ref _ts_read);
+
+            // TODO: Using multi-threading to host sorting
+            try
+            {
+                MethodInfo method = GetSortingAlgorithm(methodName);
+                SortingAlg.FuncDelegate = (SortingAlg.AlgDelegate)Delegate.CreateDelegate(typeof(SortingAlg.AlgDelegate), method);
+                sw.Restart();
+                SortingAlg.Start(ref data);
+                sw.Stop();
+                UpdateTimeSpan(ref sw, ref _ts_sort);
+            }
+            catch (Exception ex)
+            {
+                //throw ex;
+                MessageBox.Show(ex.Message);
+                return;
+            }
+
+            // Export result
+            sw.Restart();
+            ExportData(ref data, txt_OutputPath.Text);
+            sw.Stop();
+            UpdateTimeSpan(ref sw, ref _ts_write);
+
+            // Release memory
+            data = null;
+            raw = null;
+            GC.Collect();
+
+            SortingJobFinishedEventArgs e = new SortingJobFinishedEventArgs(methodName, sw.Elapsed.TotalMilliseconds);
+            SortingFinishedEvent(e);     // fire event to notice that sorting is done
+
+        }
+
+        private void StartBenchmarking(string selectedAlg, string dataPath, int round, string logPath)
+        {
+            string raw = File.ReadAllText(dataPath);
+            string[] data = raw.Split(' ');
+
+            // Start benchmarking
+            try
+            {
+                MethodInfo method = GetSortingAlgorithm(selectedAlg); // Get method from cmb_SortingMethod
+                AlgBenchmark.IterationCountDownEvent += this.BenchmarkCountDown;    // Subscribe count down event
+                AlgBenchmark.FuncDelegate = (AlgBenchmark.AlgDelegate)Delegate.CreateDelegate(typeof(AlgBenchmark.AlgDelegate), method);
+                AlgBenchmark.Start(ref data, round, logPath);
+                AlgBenchmark.IterationCountDownEvent -= this.BenchmarkCountDown;    // Unsubscribe count down event
+                MessageBox.Show("Done");
+            }
+            catch (Exception ex)
+            {
+                AlgBenchmark.IterationCountDownEvent -= this.BenchmarkCountDown;    // Unsubscribe count down event
+                MessageBox.Show(ex.Message);
+                return;
+            }
         }
         #endregion
 
@@ -230,6 +299,7 @@ namespace RQsortCompet
         private void ShowTimeSpan(string str, double ts)
         {
             txt_Display.AppendText(string.Format("Time for {0}: {1}ms \r\n", str, ts));
+
         }
 
         private void ExportData(ref string[] data, string destination)
@@ -245,6 +315,7 @@ namespace RQsortCompet
         private void BenchmarkCountDown(IterationEventArgs e)
         {
             SetText(txt_Display, string.Format("Remaining round: {0}\r\n", e.IterationCount));
+            //tssl_Status.Text = e.IterationCount.ToString();
         }
 
         private MethodInfo GetSortingAlgorithm(string methodName)
@@ -292,85 +363,6 @@ namespace RQsortCompet
             }
         }
 
-        private void StartSorting(string dataPath, string methodName)
-        {
-            // Read file and split them with space
-            string raw;
-            string[] data;
-            Stopwatch sw = new Stopwatch();
-
-            // Read file and generate data
-            sw.Restart();
-            try
-            {
-                raw = File.ReadAllText(dataPath);
-                data = raw.Split(' ');
-            }
-            catch (Exception ex)
-            {
-                //throw ex;
-                MessageBox.Show(ex.Message);
-                return;
-            }
-            sw.Stop();
-            UpdateTimeSpan(ref sw, ref _ts_read);
-
-            // TODO: Using multi-threading to host sorting
-            try
-            {
-                MethodInfo method = GetSortingAlgorithm(methodName);
-                SortingAlg.FuncDelegate = (SortingAlg.AlgDelegate)Delegate.CreateDelegate(typeof(SortingAlg.AlgDelegate), method);
-                sw.Restart();
-                SortingAlg.Start(ref data);
-                sw.Stop();
-                UpdateTimeSpan(ref sw, ref _ts_sort);
-            }
-            catch (Exception ex)
-            {
-                //throw ex;
-                MessageBox.Show(ex.Message);
-                return;
-            }
-
-            // Export result
-            sw.Restart();
-            ExportData(ref data, txt_OutputPath.Text);
-            sw.Stop();
-            UpdateTimeSpan(ref sw, ref _ts_write);
-
-            // Release memory
-            data = null;
-            raw = null;
-            GC.Collect();
-
-            SortingJobFinishedEventArgs e = new SortingJobFinishedEventArgs(methodName, sw.Elapsed.TotalMilliseconds);
-            SortingFinishedEvent(e);     // fire event to notice that sorting is done
-            
-        }
-
-        private void StartBenchmarking(string selectedAlg, string dataPath, int round, string logPath)
-        {
-            string raw = File.ReadAllText(dataPath);
-            string[] data = raw.Split(' ');
-
-            // Start benchmarking
-            try
-            {
-                MethodInfo method = GetSortingAlgorithm(selectedAlg); // Get method from cmb_SortingMethod
-                AlgBenchmark.IterationCountDownEvent += this.BenchmarkCountDown;    // Subscribe count down event
-                AlgBenchmark.FuncDelegate = (AlgBenchmark.AlgDelegate)Delegate.CreateDelegate(typeof(AlgBenchmark.AlgDelegate), method);
-                AlgBenchmark.Start(ref data, round, logPath);
-                AlgBenchmark.IterationCountDownEvent -= this.BenchmarkCountDown;    // Unsubscribe count down event
-                MessageBox.Show("Done");
-            }
-            catch (Exception ex)
-            {
-                AlgBenchmark.IterationCountDownEvent -= this.BenchmarkCountDown;    // Unsubscribe count down event
-                MessageBox.Show(ex.Message);
-                return;
-            }
-        }
-
         private void UpdateInformation(SortingJobFinishedEventArgs e)
         {
             // Update information to textbox
@@ -404,12 +396,64 @@ namespace RQsortCompet
         {
             try
             {
-                string methodName = cmb_SortingMethod.SelectedItem.ToString();
-                string inputPath = txt_InputPath.Text;
-                //SortingFinishedEvent += UpdateInformation;      // Subscribe sorting job finished event
-                //_worker = new Thread(() => StartSorting(inputPath, methodName));
-                _worker = new Thread(() => StartBenchmarking(methodName, inputPath, Convert.ToInt32(txt_Round.Text), txt_LogPath.Text));
-                _worker.Start();
+                FileStream fs = File.OpenRead(txt_InputPath.Text);
+                BufferedStream bs = new BufferedStream(fs);
+                StreamReader reader = new StreamReader(bs);
+                string line = string.Empty;
+                string remaining = string.Empty;
+                List<string[]> tempData = new List<string[]>(); 
+                bool isRemaining = false;
+
+                string[] data = {};
+                string[] temp;
+                int count = 0;
+                int lastidx = -1;
+                char[] buffer = new char[512000];
+
+                while (!reader.EndOfStream)
+                {
+                    reader.Read(buffer, 0, 512000);
+                    line = new string(buffer);
+
+                    if (remaining != string.Empty)
+                    {
+                        line = remaining + line;
+                        remaining = string.Empty;
+                    }
+
+                    if (line[line.Length - 1] == '\0' || line[line.Length - 1] == ' ')
+                    {
+                        line = line.Trim('\0');
+                        temp = line.Split(' ');
+                    }
+                    else
+                    {
+                        line = line.Trim('\0');
+                        lastidx = line.LastIndexOf(' ');
+                        remaining = line.Substring(lastidx);
+                        line = line.Substring(0, lastidx);
+                        temp = line.Split(' ');
+                    }
+
+                    tempData.Add(temp);
+                    temp = null;
+                    line = null;
+                    GC.Collect();
+                    txt_Display.AppendText(tempData.Count.ToString()+"\n");
+                }
+
+                
+                /*
+                for (int i = 0; i < data.Length; i++)
+                {
+                    txt_Display.AppendText(data[i] + "\r\n");
+                }
+                */
+                txt_Display.AppendText(data.Length.ToString());
+                data = null;
+                temp = null;
+                GC.Collect();
+
             }
             catch (Exception ex)
             {

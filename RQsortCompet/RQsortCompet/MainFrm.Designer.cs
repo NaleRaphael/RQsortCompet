@@ -46,6 +46,7 @@
             this.tsmi_Benchmark = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmi_Preference = new System.Windows.Forms.ToolStripMenuItem();
             this.pnl_Main = new System.Windows.Forms.Panel();
+            this.btn_Test = new System.Windows.Forms.Button();
             this.cmb_SortingMethod = new System.Windows.Forms.ComboBox();
             this.lbl_SortingMethod = new System.Windows.Forms.Label();
             this.pnl_Benchmark = new System.Windows.Forms.Panel();
@@ -60,7 +61,6 @@
             this.btn_Benchmark = new System.Windows.Forms.Button();
             this.lbl_TestData = new System.Windows.Forms.Label();
             this.lbl_LogPath = new System.Windows.Forms.Label();
-            this.btn_Test = new System.Windows.Forms.Button();
             this.statusStrip.SuspendLayout();
             this.menuStrip.SuspendLayout();
             this.pnl_Main.SuspendLayout();
@@ -90,7 +90,7 @@
             // tssl_SplitLine01
             // 
             this.tssl_SplitLine01.Name = "tssl_SplitLine01";
-            this.tssl_SplitLine01.Size = new System.Drawing.Size(602, 20);
+            this.tssl_SplitLine01.Size = new System.Drawing.Size(571, 20);
             this.tssl_SplitLine01.Spring = true;
             // 
             // tssl_Time
@@ -240,6 +240,16 @@
             this.pnl_Main.Size = new System.Drawing.Size(317, 284);
             this.pnl_Main.TabIndex = 8;
             // 
+            // btn_Test
+            // 
+            this.btn_Test.Location = new System.Drawing.Point(68, 256);
+            this.btn_Test.Name = "btn_Test";
+            this.btn_Test.Size = new System.Drawing.Size(75, 23);
+            this.btn_Test.TabIndex = 9;
+            this.btn_Test.Text = "test";
+            this.btn_Test.UseVisualStyleBackColor = true;
+            this.btn_Test.Click += new System.EventHandler(this.btn_Test_Click);
+            // 
             // cmb_SortingMethod
             // 
             this.cmb_SortingMethod.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
@@ -327,7 +337,7 @@
             this.txt_TestData.ReadOnly = true;
             this.txt_TestData.Size = new System.Drawing.Size(277, 22);
             this.txt_TestData.TabIndex = 2;
-            this.txt_TestData.Text = "D:\\Users\\Nale\\Desktop\\alghw\\log\\log.csv";
+            this.txt_TestData.Text = "D:\\Users\\Nale\\Desktop\\alghw\\input\\input.txt";
             // 
             // txt_LogPath
             // 
@@ -386,16 +396,6 @@
             this.lbl_LogPath.Size = new System.Drawing.Size(47, 12);
             this.lbl_LogPath.TabIndex = 3;
             this.lbl_LogPath.Text = "Log path";
-            // 
-            // btn_Test
-            // 
-            this.btn_Test.Location = new System.Drawing.Point(68, 256);
-            this.btn_Test.Name = "btn_Test";
-            this.btn_Test.Size = new System.Drawing.Size(75, 23);
-            this.btn_Test.TabIndex = 9;
-            this.btn_Test.Text = "test";
-            this.btn_Test.UseVisualStyleBackColor = true;
-            this.btn_Test.Click += new System.EventHandler(this.btn_Test_Click);
             // 
             // MainFrm
             // 

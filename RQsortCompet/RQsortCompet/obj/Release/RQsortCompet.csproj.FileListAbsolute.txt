@@ -1,0 +1,11 @@
+D:\Users\Nale\Documents\Visual Studio 2012\Projects\RQsortCompet\RQsortCompet\bin\Release\RQsortCompet.exe.config
+D:\Users\Nale\Documents\Visual Studio 2012\Projects\RQsortCompet\RQsortCompet\obj\Release\RQsortCompet.Frm_DataConverter.resources
+D:\Users\Nale\Documents\Visual Studio 2012\Projects\RQsortCompet\RQsortCompet\obj\Release\RQsortCompet.Frm_Preference.resources
+D:\Users\Nale\Documents\Visual Studio 2012\Projects\RQsortCompet\RQsortCompet\obj\Release\RQsortCompet.MainFrm.resources
+D:\Users\Nale\Documents\Visual Studio 2012\Projects\RQsortCompet\RQsortCompet\obj\Release\RQsortCompet.Properties.Resources.resources
+D:\Users\Nale\Documents\Visual Studio 2012\Projects\RQsortCompet\RQsortCompet\obj\Release\RQsortCompet.csproj.GenerateResource.Cache
+D:\Users\Nale\Documents\Visual Studio 2012\Projects\RQsortCompet\RQsortCompet\bin\Release\RQsortCompet.exe
+D:\Users\Nale\Documents\Visual Studio 2012\Projects\RQsortCompet\RQsortCompet\bin\Release\RQsortCompet.pdb
+D:\Users\Nale\Documents\Visual Studio 2012\Projects\RQsortCompet\RQsortCompet\obj\Release\RQsortCompet.exe
+D:\Users\Nale\Documents\Visual Studio 2012\Projects\RQsortCompet\RQsortCompet\obj\Release\RQsortCompet.pdb
+d:\users\nale\documents\visual studio 2012\Projects\RQsortCompet\RQsortCompet\obj\Release\RQsortCompet.csprojResolveAssemblyReference.cache
