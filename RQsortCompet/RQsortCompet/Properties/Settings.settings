@@ -2,7 +2,7 @@
 <SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="RQsortCompet.Properties" GeneratedClassName="Settings">
   <Profiles />
   <Settings>
-    <Setting Name="_STACK_DEPTH" Type="System.Int32" Scope="User">
+    <Setting Name="_MAX_STACK_DEPTH" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">10</Value>
     </Setting>
     <Setting Name="_DEFAULT_INPUT_DIRECTORY" Type="System.String" Scope="User">
@@ -13,6 +13,12 @@
     </Setting>
     <Setting Name="_SWITCH_THRESHOLD" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">400</Value>
+    </Setting>
+    <Setting Name="_MAX_DATA_SIZE" Type="System.Int64" Scope="User">
+      <Value Profile="(Default)">62914560</Value>
+    </Setting>
+    <Setting Name="_INI_STACK_DEPTH" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">10</Value>
     </Setting>
   </Settings>
 </SettingsFile>

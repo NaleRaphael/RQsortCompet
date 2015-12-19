@@ -20,7 +20,8 @@ namespace RQsortCompet
 
         private void InitializePreference()
         {
-            txt_MaxStackDepth.Text = Properties.Settings.Default._STACK_DEPTH.ToString();
+            txt_MaxStackDepth.Text = Properties.Settings.Default._MAX_STACK_DEPTH.ToString();
+            txt_InitialStackDepth.Text = Properties.Settings.Default._INI_STACK_DEPTH.ToString();
         }
 
         private void btn_Save_Click(object sender, EventArgs e)
@@ -30,7 +31,8 @@ namespace RQsortCompet
             {
                 try
                 {
-                    Properties.Settings.Default._STACK_DEPTH = Convert.ToInt32(txt_MaxStackDepth.Text);
+                    Properties.Settings.Default._MAX_STACK_DEPTH = Convert.ToInt32(txt_MaxStackDepth.Text);
+                    Properties.Settings.Default._INI_STACK_DEPTH = Convert.ToInt32(txt_InitialStackDepth.Text);
                 }
                 catch (Exception ex)
                 {

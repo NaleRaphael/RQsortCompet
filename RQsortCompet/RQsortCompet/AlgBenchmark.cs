@@ -19,7 +19,7 @@ namespace RQsortCompet
 
         private static Stopwatch _sw = new Stopwatch();
 
-        public static void Start(ref string[] data, int stepNum, string logPath)
+        public static void Start(ref string[] data, int stepNum, int loop, string logPath)
         {
             if (stepNum <= 0)
             {
@@ -33,7 +33,7 @@ namespace RQsortCompet
 
             try
             {
-                Benchmark(FuncDelegate, ref data, stepNum, logPath);
+                Benchmark(FuncDelegate, ref data, stepNum, loop, logPath);
             }
             catch (Exception ex)
             {
@@ -41,11 +41,11 @@ namespace RQsortCompet
             }
         }
 
-        private static void Benchmark(AlgDelegate func, ref string[] data, int stepNum, string logPath)
+        private static void Benchmark(AlgDelegate func, ref string[] data, int stepNum, int loop, string logPath)
         {
             int step = data.Length / stepNum;
 
-            if (step <= 1)
+            if (step < 1)
             {
                 throw new MyBenchmarkException("Given value of testing round makes step for each loop be too small.\nPlease re-enter an value.");
             }
@@ -54,19 +54,27 @@ namespace RQsortCompet
             string[] testData = new string[data.Length];
             IterationEventArgs iterArgs = new IterationEventArgs(stepNum);
 
+            double avgTime = 0;
+
             try
             {
                 for (int i = 1; i <= stepNum; i++)
                 {
-                    Array.Copy(data, testData, step * i);
-                    _sw.Restart();
-                    func(ref testData, 0, step * i - 1);
-                    _sw.Stop();
-
+                    avgTime = 0;    // Reset
+                    // TODO: Apply loops for average
+                    for (int j = 0; j < loop; j++)
+                    {
+                        Array.Copy(data, testData, step * i);
+                        _sw.Restart();
+                        func(ref testData, 0, step * i - 1);
+                        _sw.Stop();
+                        avgTime += _sw.Elapsed.TotalMilliseconds;
+                    }
                     iterArgs.IterationCount -= 1;       // Count down
                     IterationCountDownEvent(iterArgs);  // Fire event to notice host
                     //log[i - 1] = string.Format("{0}, {1}", step * i, ((_sw.ElapsedTicks * 1000000.0 / Stopwatch.Frequency)).ToString());
-                    log[i - 1] = string.Format("{0}, {1}", step * i, (_sw.Elapsed.TotalMilliseconds).ToString());
+                    //log[i - 1] = string.Format("{0}, {1}", step * i, (_sw.Elapsed.TotalMilliseconds).ToString());
+                    log[i - 1] = string.Format("{0}, {1}", step * i, (avgTime / loop).ToString());
                 }
                 WriteLog(logPath, log);
             }

@@ -26,12 +26,12 @@ namespace RQsortCompet.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("10")]
-        public int _STACK_DEPTH {
+        public int _MAX_STACK_DEPTH {
             get {
-                return ((int)(this["_STACK_DEPTH"]));
+                return ((int)(this["_MAX_STACK_DEPTH"]));
             }
             set {
-                this["_STACK_DEPTH"] = value;
+                this["_MAX_STACK_DEPTH"] = value;
             }
         }
         
@@ -68,6 +68,30 @@ namespace RQsortCompet.Properties {
             }
             set {
                 this["_SWITCH_THRESHOLD"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("62914560")]
+        public long _MAX_DATA_SIZE {
+            get {
+                return ((long)(this["_MAX_DATA_SIZE"]));
+            }
+            set {
+                this["_MAX_DATA_SIZE"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("10")]
+        public int _INI_STACK_DEPTH {
+            get {
+                return ((int)(this["_INI_STACK_DEPTH"]));
+            }
+            set {
+                this["_INI_STACK_DEPTH"] = value;
             }
         }
     }

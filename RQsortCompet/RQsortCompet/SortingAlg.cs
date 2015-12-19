@@ -15,8 +15,8 @@ namespace RQsortCompet
 
         private static Random _rand = new Random();
 
-        private static readonly int _MAX_STACK_DEPTH = Properties.Settings.Default._STACK_DEPTH;
-        private static int _stackDepth = 10;
+        private static readonly int _MAX_STACK_DEPTH = Properties.Settings.Default._MAX_STACK_DEPTH;
+        private static int _stackDepth = Properties.Settings.Default._INI_STACK_DEPTH;
         private static readonly int _SWITCH_THRESHOLD = Properties.Settings.Default._SWITCH_THRESHOLD;
 
         #region Properties
@@ -301,6 +301,11 @@ namespace RQsortCompet
                         () => QSort(a, q + 1, r, sd)
                     );
                 }
+                else
+                {
+                    QSort(a, p, q - 1, sd);
+                    QSort(a, q + 1, r, sd);
+                }
             }
         }
 
@@ -387,6 +392,11 @@ namespace RQsortCompet
                         () => RQSort(a, q + 1, r, sd)
                     );
                 }
+                else
+                {
+                    RQSort(a, p, q - 1, sd);
+                    RQSort(a, q + 1, r, sd);
+                }
             }
         }
 
@@ -408,7 +418,7 @@ namespace RQsortCompet
             }
 
             // Select index of pivot
-            int p = _rand.Next(lo+1, hi);
+            //int p = _rand.Next(lo+1, hi);
 
             // Do three-way partition
             int lt, gt, v;
@@ -505,7 +515,9 @@ namespace RQsortCompet
             int i = p - 1;
             for (int j = p; j < r; j++)
             {
-                if (string.Compare(a[j], v) <= 0)
+                // Compare these string using ordinal(binary) sort rules.
+                // See: https://msdn.microsoft.com/en-us/library/system.stringcomparison.aspx
+                if (string.Compare(a[j], v, StringComparison.Ordinal) <= 0)
                 {
                     i++;
                     Swap(ref a[i], ref a[j]);
@@ -535,11 +547,12 @@ namespace RQsortCompet
         /// <param name="v">Index of pivot.</param>
         private static void Partition3(string[] a, int lo, int hi, int d, int sd, out int lt, out int gt, out int v)
         {
-            int i = lo + 1; // Running index to select target
+            int i = lo; // Running index to select target
             int t = -1;     // Preallocate space for target
+            int p = _rand.Next(lo + 1, hi); // Select index of pivot
             lt = lo;
             gt = hi;
-            v = CharAt(a[lo], d);   // Pivot
+            v = CharAt(a[p], d);   // Pivot
 
             while (i <= gt)
             {
@@ -571,11 +584,11 @@ namespace RQsortCompet
         {
             string temp;    // pivot
             int j;
-            for (int i = left + 1; i < right; i++)
+            for (int i = left + 1; i <= right; i++)
             {
                 temp = a[i];
                 j = i - 1;
-                while (j > left - 1 && string.Compare(temp, a[j], StringComparison.Ordinal) < 0)
+                while (j > left - 1 && string.Compare(temp, a[j]) < 0)
                 {
                     a[j + 1] = a[j];
                     j--;

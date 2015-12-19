@@ -110,7 +110,9 @@ namespace RQsortCompet
             {
                 string methodName = cmb_SortingMethod.SelectedItem.ToString();
                 string inputPath = txt_InputPath.Text;
-                _worker = new Thread(() => StartBenchmarking(methodName, inputPath, Convert.ToInt32(txt_Round.Text), txt_LogPath.Text));
+                int round = Convert.ToInt32(txt_Round.Text);
+                int loop = Convert.ToInt32(txt_LoopForAverage.Text);
+                _worker = new Thread(() => StartBenchmarking(methodName, inputPath, round, loop, txt_LogPath.Text));
                 _worker.Start();
             }
             catch (Exception ex)
@@ -184,7 +186,7 @@ namespace RQsortCompet
 
         }
 
-        private void StartBenchmarking(string selectedAlg, string dataPath, int round, string logPath)
+        private void StartBenchmarking(string selectedAlg, string dataPath, int round, int loop, string logPath)
         {
             string raw = File.ReadAllText(dataPath);
             string[] data = raw.Split(' ');
@@ -195,7 +197,7 @@ namespace RQsortCompet
                 MethodInfo method = GetSortingAlgorithm(selectedAlg); // Get method from cmb_SortingMethod
                 AlgBenchmark.IterationCountDownEvent += this.BenchmarkCountDown;    // Subscribe count down event
                 AlgBenchmark.FuncDelegate = (AlgBenchmark.AlgDelegate)Delegate.CreateDelegate(typeof(AlgBenchmark.AlgDelegate), method);
-                AlgBenchmark.Start(ref data, round, logPath);
+                AlgBenchmark.Start(ref data, round, loop, logPath);
                 AlgBenchmark.IterationCountDownEvent -= this.BenchmarkCountDown;    // Unsubscribe count down event
                 MessageBox.Show("Done");
             }
@@ -314,8 +316,8 @@ namespace RQsortCompet
 
         private void BenchmarkCountDown(IterationEventArgs e)
         {
-            SetText(txt_Display, string.Format("Remaining round: {0}\r\n", e.IterationCount));
-            //tssl_Status.Text = e.IterationCount.ToString();
+            //SetText(txt_Display, string.Format("Remaining round: {0}\r\n", e.IterationCount));
+            tssl_Status.Text = e.IterationCount.ToString();
         }
 
         private MethodInfo GetSortingAlgorithm(string methodName)
@@ -394,72 +396,65 @@ namespace RQsortCompet
 
         private void btn_Test_Click(object sender, EventArgs e)
         {
-            try
-            {
-                FileStream fs = File.OpenRead(txt_InputPath.Text);
-                BufferedStream bs = new BufferedStream(fs);
-                StreamReader reader = new StreamReader(bs);
-                string line = string.Empty;
-                string remaining = string.Empty;
-                List<string[]> tempData = new List<string[]>(); 
-                bool isRemaining = false;
+            //try
+            //{
+            //    FileStream fs = File.OpenRead(txt_InputPath.Text);
+            //    BufferedStream bs = new BufferedStream(fs);
+            //    StreamReader reader = new StreamReader(bs);
+            //    string line = string.Empty;
+            //    string remaining = string.Empty;
+            //    List<string[]> tempData = new List<string[]>(); 
+            //    bool isRemaining = false;
 
-                string[] data = {};
-                string[] temp;
-                int count = 0;
-                int lastidx = -1;
-                char[] buffer = new char[512000];
+            //    string[] data = {};
+            //    string[] temp;
+            //    int count = 0;
+            //    int lastidx = -1;
+            //    char[] buffer = new char[512000];
 
-                while (!reader.EndOfStream)
-                {
-                    reader.Read(buffer, 0, 512000);
-                    line = new string(buffer);
+            //    while (!reader.EndOfStream)
+            //    {
+            //        reader.Read(buffer, 0, 512000);
+            //        line = new string(buffer);
 
-                    if (remaining != string.Empty)
-                    {
-                        line = remaining + line;
-                        remaining = string.Empty;
-                    }
+            //        if (remaining != string.Empty)
+            //        {
+            //            line = remaining + line;
+            //            remaining = string.Empty;
+            //        }
 
-                    if (line[line.Length - 1] == '\0' || line[line.Length - 1] == ' ')
-                    {
-                        line = line.Trim('\0');
-                        temp = line.Split(' ');
-                    }
-                    else
-                    {
-                        line = line.Trim('\0');
-                        lastidx = line.LastIndexOf(' ');
-                        remaining = line.Substring(lastidx);
-                        line = line.Substring(0, lastidx);
-                        temp = line.Split(' ');
-                    }
+            //        if (line[line.Length - 1] == '\0' || line[line.Length - 1] == ' ')
+            //        {
+            //            line = line.Trim('\0');
+            //            temp = line.Split(' ');
+            //        }
+            //        else
+            //        {
+            //            line = line.Trim('\0');
+            //            lastidx = line.LastIndexOf(' ');
+            //            remaining = line.Substring(lastidx);
+            //            line = line.Substring(0, lastidx);
+            //            temp = line.Split(' ');
+            //        }
 
-                    tempData.Add(temp);
-                    temp = null;
-                    line = null;
-                    GC.Collect();
-                    txt_Display.AppendText(tempData.Count.ToString()+"\n");
-                }
+            //        tempData.Add(temp);
+            //        temp = null;
+            //        line = null;
+            //        GC.Collect();
+            //        txt_Display.AppendText(tempData.Count.ToString()+"\n");
+            //    }
 
                 
-                /*
-                for (int i = 0; i < data.Length; i++)
-                {
-                    txt_Display.AppendText(data[i] + "\r\n");
-                }
-                */
-                txt_Display.AppendText(data.Length.ToString());
-                data = null;
-                temp = null;
-                GC.Collect();
+            //    txt_Display.AppendText(data.Length.ToString());
+            //    data = null;
+            //    temp = null;
+            //    GC.Collect();
 
-            }
-            catch (Exception ex)
-            {
-                //SortingFinishedEvent -= UpdateInformation;  // Unsubscribe sorting job finished event
-                MessageBox.Show(ex.Message);
-            }
+            //}
+            //catch (Exception ex)
+            //{
+            //    MessageBox.Show(ex.Message);
+            //}
         }
     }
 

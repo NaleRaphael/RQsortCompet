@@ -61,6 +61,8 @@
             this.btn_Benchmark = new System.Windows.Forms.Button();
             this.lbl_TestData = new System.Windows.Forms.Label();
             this.lbl_LogPath = new System.Windows.Forms.Label();
+            this.txt_LoopForAverage = new System.Windows.Forms.TextBox();
+            this.lbl_LoopForAverage = new System.Windows.Forms.Label();
             this.statusStrip.SuspendLayout();
             this.menuStrip.SuspendLayout();
             this.pnl_Main.SuspendLayout();
@@ -90,7 +92,7 @@
             // tssl_SplitLine01
             // 
             this.tssl_SplitLine01.Name = "tssl_SplitLine01";
-            this.tssl_SplitLine01.Size = new System.Drawing.Size(571, 20);
+            this.tssl_SplitLine01.Size = new System.Drawing.Size(602, 20);
             this.tssl_SplitLine01.Spring = true;
             // 
             // tssl_Time
@@ -287,7 +289,9 @@
             // grp_Benchmark
             // 
             this.grp_Benchmark.Controls.Add(this.lbl_Description_Benchmark);
+            this.grp_Benchmark.Controls.Add(this.lbl_LoopForAverage);
             this.grp_Benchmark.Controls.Add(this.lbl_Round);
+            this.grp_Benchmark.Controls.Add(this.txt_LoopForAverage);
             this.grp_Benchmark.Controls.Add(this.txt_Round);
             this.grp_Benchmark.Controls.Add(this.txt_TestData);
             this.grp_Benchmark.Controls.Add(this.txt_LogPath);
@@ -397,6 +401,23 @@
             this.lbl_LogPath.TabIndex = 3;
             this.lbl_LogPath.Text = "Log path";
             // 
+            // txt_LoopForAverage
+            // 
+            this.txt_LoopForAverage.Location = new System.Drawing.Point(210, 88);
+            this.txt_LoopForAverage.Name = "txt_LoopForAverage";
+            this.txt_LoopForAverage.Size = new System.Drawing.Size(50, 22);
+            this.txt_LoopForAverage.TabIndex = 4;
+            this.txt_LoopForAverage.Text = "3";
+            // 
+            // lbl_LoopForAverage
+            // 
+            this.lbl_LoopForAverage.AutoSize = true;
+            this.lbl_LoopForAverage.Location = new System.Drawing.Point(118, 93);
+            this.lbl_LoopForAverage.Name = "lbl_LoopForAverage";
+            this.lbl_LoopForAverage.Size = new System.Drawing.Size(86, 12);
+            this.lbl_LoopForAverage.TabIndex = 3;
+            this.lbl_LoopForAverage.Text = "Loop for average";
+            // 
             // MainFrm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -461,6 +482,8 @@
         private System.Windows.Forms.Button btn_SelectTestData;
         private System.Windows.Forms.Label lbl_TestData;
         private System.Windows.Forms.Button btn_Test;
+        private System.Windows.Forms.Label lbl_LoopForAverage;
+        private System.Windows.Forms.TextBox txt_LoopForAverage;
     }
 }
 

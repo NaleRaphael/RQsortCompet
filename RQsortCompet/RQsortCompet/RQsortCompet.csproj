@@ -47,6 +47,7 @@
   <ItemGroup>
     <Compile Include="AlgBenchmark.cs" />
     <Compile Include="DataConverter.cs" />
+    <Compile Include="DataReader.cs" />
     <Compile Include="Frm_DataConverter.cs">
       <SubType>Form</SubType>
     </Compile>
