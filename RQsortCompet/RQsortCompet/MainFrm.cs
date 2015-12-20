@@ -51,7 +51,12 @@ namespace RQsortCompet
         {
             // For Benchmark
             this.Width = 356;
-            lbl_Description_Benchmark.Text = "Please select a file ";
+            lbl_Description_Benchmark.Text = "1. Please select a file (Test data) for benchmarking.\n";
+            lbl_Description_Benchmark.Text += "2. Choose the path for output result (Log path).\n";
+            lbl_Description_Benchmark.Text += "3. Set parameters:\n";
+            lbl_Description_Benchmark.Text += "    Round: Rounds for benchmarking.\n";
+            lbl_Description_Benchmark.Text += "    Loop for average: Repeated times for a single round.\n";
+            lbl_Description_Benchmark.Text += "    (Notice: One unit of test data = Data length / Round)\n";
             // For searching method
             cmb_SortingMethod.SelectedIndex = 3;
         }
@@ -94,7 +99,7 @@ namespace RQsortCompet
             }
             catch (Exception ex)
             {
-                SortingFinishedEvent -= UpdateInformation;  // Unsubscribe sorting job finished event
+                SortingFinishedEvent -= UpdateInformation;      // Unsubscribe sorting job finished event
                 MessageBox.Show(ex.Message);
             }
         }
@@ -140,9 +145,6 @@ namespace RQsortCompet
                 FileStream fs = File.OpenRead(dataPath);
                 BufferedStream bs = new BufferedStream(fs);
                 StreamReader reader = new StreamReader(bs);
-
-
-
             }
             catch (Exception ex)
             {
@@ -153,7 +155,6 @@ namespace RQsortCompet
             sw.Stop();
             UpdateTimeSpan(ref sw, ref _ts_read);
 
-            // TODO: Using multi-threading to host sorting
             try
             {
                 MethodInfo method = GetSortingAlgorithm(methodName);
@@ -182,7 +183,7 @@ namespace RQsortCompet
             GC.Collect();
 
             SortingJobFinishedEventArgs e = new SortingJobFinishedEventArgs(methodName, sw.Elapsed.TotalMilliseconds);
-            SortingFinishedEvent(e);     // fire event to notice that sorting is done
+            SortingFinishedEvent(e);     // fire event to notify user that sorting is done
 
         }
 
@@ -194,7 +195,7 @@ namespace RQsortCompet
             // Start benchmarking
             try
             {
-                MethodInfo method = GetSortingAlgorithm(selectedAlg); // Get method from cmb_SortingMethod
+                MethodInfo method = GetSortingAlgorithm(selectedAlg);   // Get method from cmb_SortingMethod
                 AlgBenchmark.IterationCountDownEvent += this.BenchmarkCountDown;    // Subscribe count down event
                 AlgBenchmark.FuncDelegate = (AlgBenchmark.AlgDelegate)Delegate.CreateDelegate(typeof(AlgBenchmark.AlgDelegate), method);
                 AlgBenchmark.Start(ref data, round, loop, logPath);
@@ -301,7 +302,6 @@ namespace RQsortCompet
         private void ShowTimeSpan(string str, double ts)
         {
             txt_Display.AppendText(string.Format("Time for {0}: {1}ms \r\n", str, ts));
-
         }
 
         private void ExportData(ref string[] data, string destination)
@@ -316,7 +316,6 @@ namespace RQsortCompet
 
         private void BenchmarkCountDown(IterationEventArgs e)
         {
-            //SetText(txt_Display, string.Format("Remaining round: {0}\r\n", e.IterationCount));
             tssl_Status.Text = e.IterationCount.ToString();
         }
 
@@ -455,6 +454,21 @@ namespace RQsortCompet
             //{
             //    MessageBox.Show(ex.Message);
             //}
+        }
+
+        private void MainFrm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (_worker != null && _worker.IsAlive)
+            {
+                try
+                {
+                    _worker.Abort();
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+            }
         }
     }
 

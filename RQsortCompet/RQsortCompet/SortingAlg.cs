@@ -59,6 +59,13 @@ namespace RQsortCompet
             }
         }
 
+        /// <summary>
+        /// Find the longest string from given string array.
+        /// </summary>
+        /// <param name="a">String array.</param>
+        /// <param name="left">Left index of given range.</param>
+        /// <param name="right">Right index of given range.</param>
+        /// <returns></returns>
         private static int FindLongestString(ref string[] a, int left, int right)
         {
             int maxLen = a[left].Length;
@@ -74,6 +81,10 @@ namespace RQsortCompet
             return maxLen;
         }
 
+        /// <summary>
+        /// Start sorting (using function delegate).
+        /// </summary>
+        /// <param name="data">String array.</param>
         public static void Start(ref string[] data)
         {
             try
@@ -87,6 +98,10 @@ namespace RQsortCompet
         }
 
         #region Sorting algorithm
+        /// <summary>
+        /// Quicksort.
+        /// </summary>
+        /// <param name="unsorted">String array.</param>
         public static void QSort(ref string[] unsorted)
         {
             try
@@ -99,6 +114,12 @@ namespace RQsortCompet
             }
         }
 
+        /// <summary>
+        /// Quicksort.
+        /// </summary>
+        /// <param name="unsorted">String array.</param>
+        /// <param name="start">Left index of given range.</param>
+        /// <param name="end">Right inedx of given range.</param>
         public static void QSort(ref string[] unsorted, int start, int end)
         {
             if (start < 0 || end > unsorted.Length - 1)
@@ -115,6 +136,10 @@ namespace RQsortCompet
             }
         }
 
+        /// <summary>
+        /// Quicksort (3-way partition).
+        /// </summary>
+        /// <param name="unsorted">String array.</param>
         public static void QSort3(ref string[] unsorted)
         {
             try
@@ -127,6 +152,12 @@ namespace RQsortCompet
             }
         }
 
+        /// <summary>
+        /// Quicksort (3-way partition).
+        /// </summary>
+        /// <param name="unsorted">String array.</param>
+        /// <param name="start">Left index of given range.</param>
+        /// <param name="end">Right index of given range.</param>
         public static void QSort3(ref string[] unsorted, int start, int end)
         {
             if (start < 0 || end > unsorted.Length - 1)
@@ -143,6 +174,10 @@ namespace RQsortCompet
             }
         }
 
+        /// <summary>
+        /// Randomized quicksort.
+        /// </summary>
+        /// <param name="unsorted">String array.</param>
         public static void RQSort(ref string[] unsorted)
         {
             try
@@ -155,6 +190,12 @@ namespace RQsortCompet
             }
         }
 
+        /// <summary>
+        /// Randomized quicksort.
+        /// </summary>
+        /// <param name="unsorted">String array.</param>
+        /// <param name="start">Left index of given range.</param>
+        /// <param name="end">Right index of given range.</param>
         public static void RQSort(ref string[] unsorted, int start, int end)
         {
             if (start < 0 || end > unsorted.Length - 1)
@@ -172,11 +213,19 @@ namespace RQsortCompet
             }
         }
 
+        /// <summary>
+        /// Randomized quicksort (3-way partition).
+        /// </summary>
+        /// <param name="unsorted">String array.</param>
         public static void RQSort3(string[] unsorted)
         {
             RQSort3(unsorted, 0, unsorted.Length - 1, 0, _stackDepth);
         }
 
+        /// <summary>
+        /// Randomized quicksort.
+        /// </summary>
+        /// <param name="unsorted">String array.</param>
         public static void RQSort3(ref string[] unsorted)
         {
             try
@@ -189,6 +238,12 @@ namespace RQsortCompet
             }
         }
 
+        /// <summary>
+        /// Randomized quicksort.
+        /// </summary>
+        /// <param name="unsorted">String array.</param>
+        /// <param name="start">Left index of given range.</param>
+        /// <param name="end">Right index of given range.</param>
         public static void RQSort3(ref string[] unsorted, int start, int end)
         {
             if (start < 0 || end > unsorted.Length - 1)
@@ -206,6 +261,10 @@ namespace RQsortCompet
             }
         }
 
+        /// <summary>
+        /// Combination of randomized quicksort (3-way partition) and insertion sort.
+        /// </summary>
+        /// <param name="unsorted">String array.</param>
         public static void RQSort3_hybrid(ref string[] unsorted)
         {
             try
@@ -218,6 +277,12 @@ namespace RQsortCompet
             }
         }
 
+        /// <summary>
+        /// Combination of randomized quicksort (3-way partition) and insertion sort.
+        /// </summary>
+        /// <param name="unsorted">String array.</param>
+        /// <param name="start">Left index of given range.</param>
+        /// <param name="end">Right index of given range.s</param>
         public static void RQSort3_hybrid(ref string[] unsorted, int start, int end)
         {
             if (start < 0 || end > unsorted.Length - 1)
@@ -235,6 +300,10 @@ namespace RQsortCompet
             }
         }
 
+        /// <summary>
+        /// Insertion sort.
+        /// </summary>
+        /// <param name="unsorted">String array.</param>
         public static void InsertionSort(ref string[] unsorted)
         {
             try
@@ -247,6 +316,12 @@ namespace RQsortCompet
             }
         }
 
+        /// <summary>
+        /// Insertion sort.
+        /// </summary>
+        /// <param name="unsorted">String array.</param>
+        /// <param name="left">Left index of given range.</param>
+        /// <param name="right">Right index of given range.</param>
         public static void InsertionSort(ref string[] unsorted, int left, int right)
         {
             if (left < 0 || right > unsorted.Length - 1)
@@ -264,6 +339,10 @@ namespace RQsortCompet
             }
         }
 
+        /// <summary>
+        /// Insertion sort (multiple key comparison).
+        /// </summary>
+        /// <param name="unsorted">String array.</param>
         public static void InsertionSort_multikey(ref string[] unsorted)
         {
             try
@@ -276,11 +355,19 @@ namespace RQsortCompet
             }
         }
 
+        /// <summary>
+        /// Insertion sort (multiple key comparison).
+        /// </summary>
+        /// <param name="unsorted">String array.</param>
+        /// <param name="left">Left index of given range.</param>
+        /// <param name="right">Right index of given range.</param>
         public static void InsertionSort_multikey(ref string[] unsorted, int left, int right)
         {
+            // Find legnth of the longest string.
             int maxLen = FindLongestString(ref unsorted, left, right);
             try
             {
+                // Do insertion sort. Comparison starts from the rightest character.
                 InsrtSort_mk(unsorted, left, right, maxLen);
             }
             catch (Exception ex)
@@ -289,6 +376,13 @@ namespace RQsortCompet
             }
         }
 
+        /// <summary>
+        /// Quicksort.
+        /// </summary>
+        /// <param name="a">String array.</param>
+        /// <param name="p">Left index of given range.</param>
+        /// <param name="r">Right index of given range.</param>
+        /// <param name="sd">Depth of stack.</param>
         private static void QSort(string[] a, int p, int r, int sd)
         {
             if (p < r)
@@ -309,6 +403,14 @@ namespace RQsortCompet
             }
         }
 
+        /// <summary>
+        /// Quicksort (3-way parition).
+        /// </summary>
+        /// <param name="a">String array.</param>
+        /// <param name="lo">Left inedx of given range.</param>
+        /// <param name="hi">Right index of given range.</param>
+        /// <param name="d">Depth, index of selected character in a string.</param>
+        /// <param name="sd">Depth of stack.</param>
         private static void QSort3(string[] a, int lo, int hi, int d, int sd)
         {
             if (hi <= lo)
@@ -380,6 +482,13 @@ namespace RQsortCompet
             }
         }
 
+        /// <summary>
+        /// Randomized quicksort.
+        /// </summary>
+        /// <param name="a">String array.</param>
+        /// <param name="p">Left index of given range.</param>
+        /// <param name="r">Right index of given range.</param>
+        /// <param name="sd">Depth of stack.</param>
         private static void RQSort(string[] a, int p, int r, int sd)
         {
             if (p < r)
@@ -407,7 +516,7 @@ namespace RQsortCompet
         /// <param name="a">String array.</param>
         /// <param name="lo">Low index pointer of a string.</param>
         /// <param name="hi">High index pointer of a string.</param>
-        /// <param name="d">Depth of a string.</param>
+        /// <param name="d">Depth, index of selected character in a string.</param>
         /// <param name="sd">Depth of stack.</param>
         private static void RQSort3(string[] a, int lo, int hi, int d, int sd)
         {
@@ -422,7 +531,7 @@ namespace RQsortCompet
 
             // Do three-way partition
             int lt, gt, v;
-            Partition3(a, lo, hi, d, sd, out lt, out gt, out v);
+            RPartition3(a, lo, hi, d, sd, out lt, out gt, out v);
 
             if (--sd >= 0)
             {
@@ -457,6 +566,14 @@ namespace RQsortCompet
             }
         }
 
+        /// <summary>
+        /// Combination of randomized quicksort (3-way partition) and insertion sort.
+        /// </summary>
+        /// <param name="a">String array.</param>
+        /// <param name="lo">Left index of given range.</param>
+        /// <param name="hi">Right index of given range.</param>
+        /// <param name="d">Depth, index of selected character in a string.</param>
+        /// <param name="sd">Depth of stack.</param>
         private static void RQSort3_hybrid(string[] a, int lo, int hi, int d, int sd)
         {
             // Check
@@ -466,7 +583,7 @@ namespace RQsortCompet
             }
             else if (hi - lo < _SWITCH_THRESHOLD)
             {
-                InsrtSort(a, lo, hi);
+                InsertionSort_multikey(ref a, lo, hi);
             }
 
             // Select index of pivot
@@ -474,7 +591,7 @@ namespace RQsortCompet
 
             // Do three-way partition
             int lt, gt, v;
-            Partition3(a, lo, hi, d, sd, out lt, out gt, out v);
+            RPartition3(a, lo, hi, d, sd, out lt, out gt, out v);
 
             if (--sd >= 0)
             {
@@ -509,6 +626,13 @@ namespace RQsortCompet
             }
         }
 
+        /// <summary>
+        /// Partition process for string array. Using built-in method.
+        /// </summary>
+        /// <param name="a">String array.</param>
+        /// <param name="p">Left index of given range.</param>
+        /// <param name="r">Right index of given range.</param>
+        /// <returns></returns>
         private static int Partition(string[] a, int p, int r)
         {
             string v = a[r];
@@ -527,6 +651,13 @@ namespace RQsortCompet
             return i + 1;
         }
 
+        /// <summary>
+        /// Randomized parition processing. Using built-in method.
+        /// </summary>
+        /// <param name="a">String array.</param>
+        /// <param name="p">Left index of given range.</param>
+        /// <param name="r">Right index of given range.</param>
+        /// <returns></returns>
         private static int RPartition(string[] a, int p, int r)
         {
             int i = _rand.Next(p, r);
@@ -535,19 +666,19 @@ namespace RQsortCompet
         }
 
         /// <summary>
-        /// Three-way partitioning.
+        /// Randomized 3-way partition process.
         /// </summary>
         /// <param name="a">String array.</param>
         /// <param name="lo">Lowest index pointer of a string.</param>
         /// <param name="hi">Highest inedx pointer of a string.</param>
-        /// <param name="d">Depth of a string.</param>
+        /// <param name="d">Depth, index of selected character in a string.</param>
         /// <param name="sd">Depth of stack.</param>
         /// <param name="lt">Index of lower threshold.</param>
         /// <param name="gt">Index of higher threshold.</param>
         /// <param name="v">Index of pivot.</param>
-        private static void Partition3(string[] a, int lo, int hi, int d, int sd, out int lt, out int gt, out int v)
+        private static void RPartition3(string[] a, int lo, int hi, int d, int sd, out int lt, out int gt, out int v)
         {
-            int i = lo; // Running index to select target
+            int i = lo;     // Running index to select target
             int t = -1;     // Preallocate space for target
             int p = _rand.Next(lo + 1, hi); // Select index of pivot
             lt = lo;
@@ -580,6 +711,12 @@ namespace RQsortCompet
             }
         }
 
+        /// <summary>
+        /// Insertion sort.
+        /// </summary>
+        /// <param name="a">String array.</param>
+        /// <param name="left">Left index of given range.</param>
+        /// <param name="right">Right index of given range.</param>
         private static void InsrtSort(string[] a, int left, int right)
         {
             string temp;    // pivot
@@ -597,16 +734,24 @@ namespace RQsortCompet
             }
         }
 
+        /// <summary>
+        /// Insertion sort (multiple key comparison).
+        /// Multiple key comparision: compare strings 
+        /// </summary>
+        /// <param name="a">String array.</param>
+        /// <param name="left">Left index of given range.</param>
+        /// <param name="right">Right index of given range.</param>
+        /// <param name="d">Depth, index of selected character in a string.</param>
         private static void InsrtSort_mk(string[] a, int left, int right, int d)
         {
-            string pivot;
-            int v = -1; // value of the selected character of pivot
+            string pivot;   
+            int v = -1;     // value of the selected character of pivot
             int j;
 
             for (int i = left + 1; i <= right; i++)
             {
                 pivot = a[i];
-                v = CharAt(pivot, d);
+                v = CharAt(pivot, d);   // get value (ASCII code) of selected character 
                 j = i - 1;
                 while (j > left - 1 && v < CharAt(a[j], d))
                 {
@@ -618,6 +763,7 @@ namespace RQsortCompet
 
             if (--d < 0)
             {
+                // Depth of 
                 return;
             }
             else

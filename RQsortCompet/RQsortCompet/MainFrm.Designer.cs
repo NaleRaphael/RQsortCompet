@@ -52,7 +52,9 @@
             this.pnl_Benchmark = new System.Windows.Forms.Panel();
             this.grp_Benchmark = new System.Windows.Forms.GroupBox();
             this.lbl_Description_Benchmark = new System.Windows.Forms.Label();
+            this.lbl_LoopForAverage = new System.Windows.Forms.Label();
             this.lbl_Round = new System.Windows.Forms.Label();
+            this.txt_LoopForAverage = new System.Windows.Forms.TextBox();
             this.txt_Round = new System.Windows.Forms.TextBox();
             this.txt_TestData = new System.Windows.Forms.TextBox();
             this.txt_LogPath = new System.Windows.Forms.TextBox();
@@ -61,8 +63,7 @@
             this.btn_Benchmark = new System.Windows.Forms.Button();
             this.lbl_TestData = new System.Windows.Forms.Label();
             this.lbl_LogPath = new System.Windows.Forms.Label();
-            this.txt_LoopForAverage = new System.Windows.Forms.TextBox();
-            this.lbl_LoopForAverage = new System.Windows.Forms.Label();
+            this.btn_Stop = new System.Windows.Forms.Button();
             this.statusStrip.SuspendLayout();
             this.menuStrip.SuspendLayout();
             this.pnl_Main.SuspendLayout();
@@ -250,6 +251,7 @@
             this.btn_Test.TabIndex = 9;
             this.btn_Test.Text = "test";
             this.btn_Test.UseVisualStyleBackColor = true;
+            this.btn_Test.Visible = false;
             this.btn_Test.Click += new System.EventHandler(this.btn_Test_Click);
             // 
             // cmb_SortingMethod
@@ -297,6 +299,7 @@
             this.grp_Benchmark.Controls.Add(this.txt_LogPath);
             this.grp_Benchmark.Controls.Add(this.btn_SelectTestData);
             this.grp_Benchmark.Controls.Add(this.btn_SelectLogPath);
+            this.grp_Benchmark.Controls.Add(this.btn_Stop);
             this.grp_Benchmark.Controls.Add(this.btn_Benchmark);
             this.grp_Benchmark.Controls.Add(this.lbl_TestData);
             this.grp_Benchmark.Controls.Add(this.lbl_LogPath);
@@ -316,18 +319,35 @@
             this.lbl_Description_Benchmark.TabIndex = 3;
             this.lbl_Description_Benchmark.Text = "Desciption for benchmark";
             // 
+            // lbl_LoopForAverage
+            // 
+            this.lbl_LoopForAverage.AutoSize = true;
+            this.lbl_LoopForAverage.Location = new System.Drawing.Point(119, 132);
+            this.lbl_LoopForAverage.Name = "lbl_LoopForAverage";
+            this.lbl_LoopForAverage.Size = new System.Drawing.Size(86, 12);
+            this.lbl_LoopForAverage.TabIndex = 3;
+            this.lbl_LoopForAverage.Text = "Loop for average";
+            // 
             // lbl_Round
             // 
             this.lbl_Round.AutoSize = true;
-            this.lbl_Round.Location = new System.Drawing.Point(6, 93);
+            this.lbl_Round.Location = new System.Drawing.Point(7, 132);
             this.lbl_Round.Name = "lbl_Round";
             this.lbl_Round.Size = new System.Drawing.Size(37, 12);
             this.lbl_Round.TabIndex = 3;
             this.lbl_Round.Text = "Round";
             // 
+            // txt_LoopForAverage
+            // 
+            this.txt_LoopForAverage.Location = new System.Drawing.Point(211, 127);
+            this.txt_LoopForAverage.Name = "txt_LoopForAverage";
+            this.txt_LoopForAverage.Size = new System.Drawing.Size(50, 22);
+            this.txt_LoopForAverage.TabIndex = 4;
+            this.txt_LoopForAverage.Text = "3";
+            // 
             // txt_Round
             // 
-            this.txt_Round.Location = new System.Drawing.Point(49, 88);
+            this.txt_Round.Location = new System.Drawing.Point(50, 127);
             this.txt_Round.Name = "txt_Round";
             this.txt_Round.Size = new System.Drawing.Size(50, 22);
             this.txt_Round.TabIndex = 4;
@@ -336,7 +356,7 @@
             // txt_TestData
             // 
             this.txt_TestData.ForeColor = System.Drawing.SystemColors.WindowText;
-            this.txt_TestData.Location = new System.Drawing.Point(5, 135);
+            this.txt_TestData.Location = new System.Drawing.Point(6, 174);
             this.txt_TestData.Name = "txt_TestData";
             this.txt_TestData.ReadOnly = true;
             this.txt_TestData.Size = new System.Drawing.Size(277, 22);
@@ -346,7 +366,7 @@
             // txt_LogPath
             // 
             this.txt_LogPath.ForeColor = System.Drawing.SystemColors.WindowText;
-            this.txt_LogPath.Location = new System.Drawing.Point(5, 177);
+            this.txt_LogPath.Location = new System.Drawing.Point(6, 216);
             this.txt_LogPath.Name = "txt_LogPath";
             this.txt_LogPath.ReadOnly = true;
             this.txt_LogPath.Size = new System.Drawing.Size(277, 22);
@@ -355,7 +375,7 @@
             // 
             // btn_SelectTestData
             // 
-            this.btn_SelectTestData.Location = new System.Drawing.Point(282, 135);
+            this.btn_SelectTestData.Location = new System.Drawing.Point(283, 174);
             this.btn_SelectTestData.Name = "btn_SelectTestData";
             this.btn_SelectTestData.Size = new System.Drawing.Size(23, 23);
             this.btn_SelectTestData.TabIndex = 1;
@@ -365,7 +385,7 @@
             // 
             // btn_SelectLogPath
             // 
-            this.btn_SelectLogPath.Location = new System.Drawing.Point(282, 177);
+            this.btn_SelectLogPath.Location = new System.Drawing.Point(283, 216);
             this.btn_SelectLogPath.Name = "btn_SelectLogPath";
             this.btn_SelectLogPath.Size = new System.Drawing.Size(23, 23);
             this.btn_SelectLogPath.TabIndex = 1;
@@ -386,7 +406,7 @@
             // lbl_TestData
             // 
             this.lbl_TestData.AutoSize = true;
-            this.lbl_TestData.Location = new System.Drawing.Point(5, 118);
+            this.lbl_TestData.Location = new System.Drawing.Point(6, 157);
             this.lbl_TestData.Name = "lbl_TestData";
             this.lbl_TestData.Size = new System.Drawing.Size(46, 12);
             this.lbl_TestData.TabIndex = 3;
@@ -395,28 +415,21 @@
             // lbl_LogPath
             // 
             this.lbl_LogPath.AutoSize = true;
-            this.lbl_LogPath.Location = new System.Drawing.Point(5, 160);
+            this.lbl_LogPath.Location = new System.Drawing.Point(6, 199);
             this.lbl_LogPath.Name = "lbl_LogPath";
             this.lbl_LogPath.Size = new System.Drawing.Size(47, 12);
             this.lbl_LogPath.TabIndex = 3;
             this.lbl_LogPath.Text = "Log path";
             // 
-            // txt_LoopForAverage
+            // btn_Stop
             // 
-            this.txt_LoopForAverage.Location = new System.Drawing.Point(210, 88);
-            this.txt_LoopForAverage.Name = "txt_LoopForAverage";
-            this.txt_LoopForAverage.Size = new System.Drawing.Size(50, 22);
-            this.txt_LoopForAverage.TabIndex = 4;
-            this.txt_LoopForAverage.Text = "3";
-            // 
-            // lbl_LoopForAverage
-            // 
-            this.lbl_LoopForAverage.AutoSize = true;
-            this.lbl_LoopForAverage.Location = new System.Drawing.Point(118, 93);
-            this.lbl_LoopForAverage.Name = "lbl_LoopForAverage";
-            this.lbl_LoopForAverage.Size = new System.Drawing.Size(86, 12);
-            this.lbl_LoopForAverage.TabIndex = 3;
-            this.lbl_LoopForAverage.Text = "Loop for average";
+            this.btn_Stop.Location = new System.Drawing.Point(149, 253);
+            this.btn_Stop.Name = "btn_Stop";
+            this.btn_Stop.Size = new System.Drawing.Size(75, 23);
+            this.btn_Stop.TabIndex = 1;
+            this.btn_Stop.Text = "Stop";
+            this.btn_Stop.UseVisualStyleBackColor = true;
+            this.btn_Stop.Click += new System.EventHandler(this.btn_Benchmark_Click);
             // 
             // MainFrm
             // 
@@ -433,6 +446,7 @@
             this.MinimizeBox = false;
             this.Name = "MainFrm";
             this.Text = "String sorting";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainFrm_FormClosing);
             this.statusStrip.ResumeLayout(false);
             this.statusStrip.PerformLayout();
             this.menuStrip.ResumeLayout(false);
@@ -484,6 +498,7 @@
         private System.Windows.Forms.Button btn_Test;
         private System.Windows.Forms.Label lbl_LoopForAverage;
         private System.Windows.Forms.TextBox txt_LoopForAverage;
+        private System.Windows.Forms.Button btn_Stop;
     }
 }
 
